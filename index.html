@@ -1,0 +1,417 @@
+```html
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>KUIBURI TIME CLOCK</title>
+
+  <!-- LINE LIFF SDK -->
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f7fa;
+      margin: 0;
+      padding: 20px;
+      color: #333;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: auto;
+    }
+
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-top: 0;
+      font-size: 24px;
+    }
+
+    .status {
+      padding: 12px;
+      border-radius: 10px;
+      background: #f1f3f5;
+      margin: 8px 0;
+      word-break: break-word;
+    }
+
+    .success {
+      background: #e8f5e9;
+      color: #2e7d32;
+    }
+
+    .error {
+      background: #ffebee;
+      color: #c62828;
+    }
+
+    .warning {
+      background: #fff8e1;
+      color: #f57f17;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      margin-top: 10px;
+      border: 0;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .login {
+      background: #06c755;
+      color: white;
+    }
+
+    .reload {
+      background: #607d8b;
+      color: white;
+    }
+
+    .profile {
+      text-align: center;
+    }
+
+    .profile img {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .small {
+      font-size: 13px;
+      color: #777;
+      word-break: break-all;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="card">
+    <h1>🏨 KUIBURI TIME CLOCK</h1>
+
+    <div id="mainStatus" class="status">
+      ℹ️ กำลังเริ่มระบบ...
+    </div>
+
+    <div id="steps"></div>
+  </div>
+
+  <div id="profileCard" class="card" style="display:none;">
+    <div class="profile">
+
+      <img id="profileImage" src="" alt="Profile">
+
+      <h2 id="profileName">-</h2>
+
+      <div class="status success">
+        ✅ Login ด้วย LINE สำเร็จ
+      </div>
+
+      <p class="small">
+        LINE User ID
+      </p>
+
+      <p id="userId" class="small">-</p>
+
+    </div>
+  </div>
+
+  <div class="card">
+
+    <button id="loginButton"
+            class="login"
+            onclick="loginWithLINE()"
+            style="display:none;">
+      🔐 Login ด้วย LINE
+    </button>
+
+    <button class="reload"
+            onclick="location.reload()">
+      🔄 โหลดหน้าใหม่
+    </button>
+
+  </div>
+
+  <div class="card">
+
+    <div class="small">
+      <b>LIFF ID:</b><br>
+      2011898137-tsjk9yOf
+    </div>
+
+    <br>
+
+    <div class="small">
+      <b>Current URL:</b><br>
+      <span id="currentUrl"></span>
+    </div>
+
+  </div>
+
+</div>
+
+
+<script>
+
+const LIFF_ID = "2011898137-tsjk9yOf";
+
+
+function addStep(message, type = "") {
+
+  const steps = document.getElementById("steps");
+
+  const div = document.createElement("div");
+
+  div.className = "status " + type;
+
+  div.innerHTML = message;
+
+  steps.appendChild(div);
+}
+
+
+function setMainStatus(message, type = "") {
+
+  const el = document.getElementById("mainStatus");
+
+  el.className = "status " + type;
+
+  el.innerHTML = message;
+}
+
+
+async function initLIFF() {
+
+  try {
+
+    setMainStatus("ℹ️ เปิดหน้า KUIBURI TIME CLOCK");
+
+    addStep("ขั้นตอน 1. กำลังเรียก liff.init()...");
+
+    await liff.init({
+      liffId: LIFF_ID
+    });
+
+    addStep(
+      "ขั้นตอน 2. liff.init() สำเร็จแล้ว",
+      "success"
+    );
+
+
+    // ตรวจว่าเปิดใน LIFF Browser หรือไม่
+
+    const isInClient = liff.isInClient();
+
+    addStep(
+      "LIFF Browser<br>" +
+      (isInClient
+        ? "✅ YES — เปิดอยู่ใน LIFF Browser"
+        : "ℹ️ NO — เปิดอยู่นอก LIFF Browser")
+    );
+
+
+    // ตรวจ Login
+
+    const loggedIn = liff.isLoggedIn();
+
+    addStep(
+      "LINE Login<br>" +
+      (loggedIn
+        ? "✅ Logged In"
+        : "❌ Not Logged In")
+    );
+
+
+    // แสดงข้อมูล LIFF
+
+    addStep(
+      "LIFF Version<br>" +
+      (liff.getVersion ? liff.getVersion() : "-")
+    );
+
+
+    if (liff.getOS) {
+
+      addStep(
+        "OS<br>" +
+        liff.getOS()
+      );
+
+    }
+
+
+    if (liff.getLineVersion) {
+
+      addStep(
+        "LINE Version<br>" +
+        liff.getLineVersion()
+      );
+
+    }
+
+
+    // ถ้ายังไม่ได้ Login
+
+    if (!loggedIn) {
+
+      setMainStatus(
+        "🔐 กรุณา Login ด้วย LINE",
+        "warning"
+      );
+
+      document.getElementById("loginButton").style.display = "block";
+
+      return;
+    }
+
+
+    // Login แล้ว
+
+    setMainStatus(
+      "✅ เชื่อมต่อ LINE สำเร็จ",
+      "success"
+    );
+
+
+    await loadProfile();
+
+  }
+
+  catch (error) {
+
+    console.error(error);
+
+    setMainStatus(
+      "❌ เกิดข้อผิดพลาด",
+      "error"
+    );
+
+    addStep(
+      "Error: " +
+      (error.message || error),
+      "error"
+    );
+
+  }
+
+}
+
+
+async function loginWithLINE() {
+
+  try {
+
+    addStep(
+      "กำลังเปิด LINE Login..."
+    );
+
+    liff.login();
+
+  }
+
+  catch (error) {
+
+    console.error(error);
+
+    addStep(
+      "❌ Login Error: " +
+      (error.message || error),
+      "error"
+    );
+
+  }
+
+}
+
+
+async function loadProfile() {
+
+  try {
+
+    const profile = await liff.getProfile();
+
+    console.log(profile);
+
+
+    document.getElementById("profileCard").style.display = "block";
+
+    document.getElementById("profileName").textContent =
+      profile.displayName || "-";
+
+
+    document.getElementById("userId").textContent =
+      profile.userId || "-";
+
+
+    if (profile.pictureUrl) {
+
+      document.getElementById("profileImage").src =
+        profile.pictureUrl;
+
+    }
+
+
+    addStep(
+      "👤 LINE Profile<br>" +
+      "ชื่อ: " +
+      (profile.displayName || "-"),
+      "success"
+    );
+
+
+    addStep(
+      "🆔 LINE User ID<br>" +
+      "<span class='small'>" +
+      (profile.userId || "-") +
+      "</span>",
+      "success"
+    );
+
+  }
+
+  catch (error) {
+
+    console.error(error);
+
+    addStep(
+      "❌ ไม่สามารถอ่าน LINE Profile ได้<br>" +
+      (error.message || error),
+      "error"
+    );
+
+  }
+
+}
+
+
+document.getElementById("currentUrl").textContent =
+  window.location.href;
+
+
+// เริ่มระบบ
+
+initLIFF();
+
+</script>
+
+</body>
+</html>
+```
