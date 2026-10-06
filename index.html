@@ -1,169 +1,155 @@
 ```html
 <!DOCTYPE html>
 <html lang="th">
+
 <head>
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0">
 
   <title>KUIBURI TIME CLOCK</title>
 
-  <!-- LINE LIFF SDK -->
   <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 
   <style>
+
     body {
       font-family: Arial, sans-serif;
-      background: #f5f7fa;
+      background: #f5f6f8;
       margin: 0;
       padding: 20px;
-      color: #333;
+      color: #222;
     }
 
-    .container {
+    .box {
       max-width: 500px;
       margin: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 18px;
+      box-shadow: 0 3px 15px rgba(0,0,0,.08);
     }
 
-    .card {
-      background: white;
-      border-radius: 16px;
-      padding: 24px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-      margin-bottom: 16px;
-    }
-
-    h1 {
+    h2 {
       text-align: center;
       margin-top: 0;
-      font-size: 24px;
     }
 
     .status {
-      padding: 12px;
-      border-radius: 10px;
-      background: #f1f3f5;
-      margin: 8px 0;
-      word-break: break-word;
+      padding: 14px;
+      border-radius: 12px;
+      margin: 10px 0;
+      line-height: 1.5;
     }
 
-    .success {
-      background: #e8f5e9;
-      color: #2e7d32;
+    .info {
+      background: #eef4ff;
     }
 
-    .error {
-      background: #ffebee;
-      color: #c62828;
+    .ok {
+      background: #e8f7ee;
+      color: #137333;
     }
 
-    .warning {
-      background: #fff8e1;
-      color: #f57f17;
+    .bad {
+      background: #fdecec;
+      color: #b42318;
     }
 
     button {
       width: 100%;
-      padding: 14px;
+      padding: 15px;
       margin-top: 10px;
       border: 0;
-      border-radius: 10px;
-      font-size: 16px;
+      border-radius: 12px;
+      font-size: 17px;
       cursor: pointer;
     }
 
-    .login {
-      background: #06c755;
+    .in {
+      background: #1677ff;
       color: white;
     }
 
-    .reload {
-      background: #607d8b;
+    .out {
+      background: #ff6b35;
       color: white;
     }
 
-    .profile {
+    button:disabled {
+      opacity: .5;
+    }
+
+    .employee {
       text-align: center;
-    }
-
-    .profile img {
-      width: 90px;
-      height: 90px;
-      border-radius: 50%;
-      object-fit: cover;
+      font-size: 18px;
+      font-weight: bold;
+      margin: 15px 0;
     }
 
     .small {
-      font-size: 13px;
+      font-size: 12px;
       color: #777;
       word-break: break-all;
+      margin-top: 20px;
     }
+
   </style>
+
 </head>
+
 
 <body>
 
-<div class="container">
+<div class="box">
 
-  <div class="card">
-    <h1>🏨 KUIBURI TIME CLOCK</h1>
+  <h2>🏨 KUIBURI TIME CLOCK</h2>
 
-    <div id="mainStatus" class="status">
-      ℹ️ กำลังเริ่มระบบ...
-    </div>
-
-    <div id="steps"></div>
+  <div
+    id="status"
+    class="status info">
+    ⏳ กำลังตรวจสอบระบบ...
   </div>
 
-  <div id="profileCard" class="card" style="display:none;">
-    <div class="profile">
 
-      <img id="profileImage" src="" alt="Profile">
-
-      <h2 id="profileName">-</h2>
-
-      <div class="status success">
-        ✅ Login ด้วย LINE สำเร็จ
-      </div>
-
-      <p class="small">
-        LINE User ID
-      </p>
-
-      <p id="userId" class="small">-</p>
-
-    </div>
+  <div
+    id="employee"
+    class="employee"
+    style="display:none;">
   </div>
 
-  <div class="card">
 
-    <button id="loginButton"
-            class="login"
-            onclick="loginWithLINE()"
-            style="display:none;">
-      🔐 Login ด้วย LINE
-    </button>
+  <button
+    id="clockInBtn"
+    class="in"
+    style="display:none;"
+    onclick="clockIn()">
+    🟢 เข้างาน
+  </button>
 
-    <button class="reload"
-            onclick="location.reload()">
-      🔄 โหลดหน้าใหม่
-    </button>
 
+  <button
+    id="clockOutBtn"
+    class="out"
+    style="display:none;"
+    onclick="clockOut()">
+    🔴 ออกงาน
+  </button>
+
+
+  <div
+    id="result"
+    class="status info"
+    style="display:none;">
   </div>
 
-  <div class="card">
 
-    <div class="small">
-      <b>LIFF ID:</b><br>
-      2011898137-tsjk9yOf
-    </div>
-
-    <br>
-
-    <div class="small">
-      <b>Current URL:</b><br>
-      <span id="currentUrl"></span>
-    </div>
-
+  <div class="small">
+    LINE LIFF<br>
+    KUIBURI TIME CLOCK
   </div>
 
 </div>
@@ -171,230 +157,126 @@
 
 <script>
 
-const LIFF_ID = "2011898137-tsjk9yOf";
+
+/*************************************************
+ * CONFIG
+ *************************************************/
+
+const LIFF_ID =
+  "2011898137-tsjk9yOf";
 
 
-function addStep(message, type = "") {
+const API_URL =
+  "https://script.google.com/macros/s/AKfycbyBIompDqCyxMz5M1isnwUbB9kDSgBe_069w_fochpLUaFeIuAOm_6O21X1288-PF7F/exec";
 
-  const steps = document.getElementById("steps");
 
-  const div = document.createElement("div");
+let employee = null;
 
-  div.className = "status " + type;
 
-  div.innerHTML = message;
+/*************************************************
+ * STATUS
+ *************************************************/
 
-  steps.appendChild(div);
+function setStatus(
+  message,
+  type = "info"
+) {
+
+  const el =
+    document.getElementById(
+      "status"
+    );
+
+  el.className =
+    "status " + type;
+
+  el.innerHTML =
+    message;
+
 }
 
 
-function setMainStatus(message, type = "") {
+function setResult(
+  message,
+  type = "info"
+) {
 
-  const el = document.getElementById("mainStatus");
+  const el =
+    document.getElementById(
+      "result"
+    );
 
-  el.className = "status " + type;
+  el.style.display =
+    "block";
 
-  el.innerHTML = message;
+  el.className =
+    "status " + type;
+
+  el.innerHTML =
+    message;
+
 }
 
+
+/*************************************************
+ * INIT LIFF
+ *************************************************/
 
 async function initLIFF() {
 
   try {
 
-    setMainStatus("ℹ️ เปิดหน้า KUIBURI TIME CLOCK");
+    setStatus(
+      "⏳ กำลังเริ่มระบบ LINE..."
+    );
 
-    addStep("ขั้นตอน 1. กำลังเรียก liff.init()...");
 
     await liff.init({
       liffId: LIFF_ID
     });
 
-    addStep(
-      "ขั้นตอน 2. liff.init() สำเร็จแล้ว",
-      "success"
-    );
 
+    /*
+     * ถ้าเปิดนอก LINE และยังไม่ได้ Login
+     */
 
-    // ตรวจว่าเปิดใน LIFF Browser หรือไม่
+    if (
+      !liff.isLoggedIn()
+    ) {
 
-    const isInClient = liff.isInClient();
-
-    addStep(
-      "LIFF Browser<br>" +
-      (isInClient
-        ? "✅ YES — เปิดอยู่ใน LIFF Browser"
-        : "ℹ️ NO — เปิดอยู่นอก LIFF Browser")
-    );
-
-
-    // ตรวจ Login
-
-    const loggedIn = liff.isLoggedIn();
-
-    addStep(
-      "LINE Login<br>" +
-      (loggedIn
-        ? "✅ Logged In"
-        : "❌ Not Logged In")
-    );
-
-
-    // แสดงข้อมูล LIFF
-
-    addStep(
-      "LIFF Version<br>" +
-      (liff.getVersion ? liff.getVersion() : "-")
-    );
-
-
-    if (liff.getOS) {
-
-      addStep(
-        "OS<br>" +
-        liff.getOS()
+      setStatus(
+        "⏳ กำลังเข้าสู่ระบบ LINE..."
       );
 
-    }
-
-
-    if (liff.getLineVersion) {
-
-      addStep(
-        "LINE Version<br>" +
-        liff.getLineVersion()
-      );
-
-    }
-
-
-    // ถ้ายังไม่ได้ Login
-
-    if (!loggedIn) {
-
-      setMainStatus(
-        "🔐 กรุณา Login ด้วย LINE",
-        "warning"
-      );
-
-      document.getElementById("loginButton").style.display = "block";
+      liff.login();
 
       return;
-    }
-
-
-    // Login แล้ว
-
-    setMainStatus(
-      "✅ เชื่อมต่อ LINE สำเร็จ",
-      "success"
-    );
-
-
-    await loadProfile();
-
-  }
-
-  catch (error) {
-
-    console.error(error);
-
-    setMainStatus(
-      "❌ เกิดข้อผิดพลาด",
-      "error"
-    );
-
-    addStep(
-      "Error: " +
-      (error.message || error),
-      "error"
-    );
-
-  }
-
-}
-
-
-async function loginWithLINE() {
-
-  try {
-
-    addStep(
-      "กำลังเปิด LINE Login..."
-    );
-
-    liff.login();
-
-  }
-
-  catch (error) {
-
-    console.error(error);
-
-    addStep(
-      "❌ Login Error: " +
-      (error.message || error),
-      "error"
-    );
-
-  }
-
-}
-
-
-async function loadProfile() {
-
-  try {
-
-    const profile = await liff.getProfile();
-
-    console.log(profile);
-
-
-    document.getElementById("profileCard").style.display = "block";
-
-    document.getElementById("profileName").textContent =
-      profile.displayName || "-";
-
-
-    document.getElementById("userId").textContent =
-      profile.userId || "-";
-
-
-    if (profile.pictureUrl) {
-
-      document.getElementById("profileImage").src =
-        profile.pictureUrl;
 
     }
 
 
-    addStep(
-      "👤 LINE Profile<br>" +
-      "ชื่อ: " +
-      (profile.displayName || "-"),
-      "success"
-    );
+    /*
+     * Login สำเร็จ
+     */
+
+    await loadEmployee();
 
 
-    addStep(
-      "🆔 LINE User ID<br>" +
-      "<span class='small'>" +
-      (profile.userId || "-") +
-      "</span>",
-      "success"
-    );
-
-  }
-
-  catch (error) {
+  } catch (error) {
 
     console.error(error);
 
-    addStep(
-      "❌ ไม่สามารถอ่าน LINE Profile ได้<br>" +
-      (error.message || error),
-      "error"
+    setStatus(
+
+      "❌ ไม่สามารถเริ่มระบบได้<br><br>" +
+
+      escapeHtml(
+        error.message ||
+        String(error)
+      ),
+
+      "bad"
+
     );
 
   }
@@ -402,11 +284,765 @@ async function loadProfile() {
 }
 
 
-document.getElementById("currentUrl").textContent =
-  window.location.href;
+/*************************************************
+ * LOAD EMPLOYEE
+ *************************************************/
+
+async function loadEmployee() {
+
+  try {
+
+    setStatus(
+      "⏳ กำลังตรวจสอบข้อมูลพนักงาน..."
+    );
 
 
-// เริ่มระบบ
+    const idToken =
+      liff.getIDToken();
+
+
+    if (!idToken) {
+
+      throw new Error(
+        "ไม่พบ LINE ID Token"
+      );
+
+    }
+
+
+    callAPI(
+
+      "profile",
+
+      {
+        idToken: idToken
+      },
+
+      function(result) {
+
+
+        if (!result.success) {
+
+          setStatus(
+
+            "❌ " +
+
+            escapeHtml(
+              result.message ||
+              "ไม่พบข้อมูลพนักงาน"
+            ),
+
+            "bad"
+
+          );
+
+          return;
+
+        }
+
+
+        if (
+          !result.authorized
+        ) {
+
+          setStatus(
+            "❌ LINE นี้ยังไม่ได้ผูกกับพนักงาน",
+            "bad"
+          );
+
+          return;
+
+        }
+
+
+        employee =
+          result.employee;
+
+
+        const employeeBox =
+          document.getElementById(
+            "employee"
+          );
+
+
+        employeeBox.style.display =
+          "block";
+
+
+        employeeBox.innerHTML =
+
+          "👤 " +
+
+          escapeHtml(
+            employee.name
+          ) +
+
+          "<br>" +
+
+          "<small>" +
+
+          escapeHtml(
+            employee.employeeId
+          ) +
+
+          " | " +
+
+          escapeHtml(
+            employee.department
+          ) +
+
+          "<br>" +
+
+          "กะ " +
+
+          escapeHtml(
+            employee.shift
+          ) +
+
+          " : " +
+
+          escapeHtml(
+            employee.shiftStart
+          ) +
+
+          " - " +
+
+          escapeHtml(
+            employee.shiftEnd
+          ) +
+
+          "</small>";
+
+
+        setStatus(
+          "✅ ยืนยันตัวตนสำเร็จ",
+          "ok"
+        );
+
+
+        updateButtons(
+          result.status
+        );
+
+      }
+
+    );
+
+
+  } catch (error) {
+
+    setStatus(
+
+      "❌ " +
+
+      escapeHtml(
+        error.message ||
+        String(error)
+      ),
+
+      "bad"
+
+    );
+
+  }
+
+}
+
+
+/*************************************************
+ * UPDATE BUTTONS
+ *************************************************/
+
+function updateButtons(status) {
+
+  const inBtn =
+    document.getElementById(
+      "clockInBtn"
+    );
+
+  const outBtn =
+    document.getElementById(
+      "clockOutBtn"
+    );
+
+
+  inBtn.style.display =
+    "block";
+
+
+  outBtn.style.display =
+    "block";
+
+
+  /*
+   * ถ้าเข้างานแล้ว
+   * ปิดปุ่มเข้างาน
+   */
+
+  if (
+    status &&
+    status.checkedIn
+  ) {
+
+    inBtn.disabled = true;
+
+    inBtn.innerHTML =
+      "✅ เข้างานแล้ว " +
+      (status.checkIn
+        ? status.checkIn
+        : '');
+
+  }
+
+
+  /*
+   * ถ้าออกงานแล้ว
+   */
+
+  if (
+    status &&
+    status.checkedOut
+  ) {
+
+    outBtn.disabled = true;
+
+    outBtn.innerHTML =
+      "✅ ออกงานแล้ว " +
+      (status.checkOut
+        ? status.checkOut
+        : '');
+
+  }
+
+}
+
+
+/*************************************************
+ * CLOCK IN
+ *************************************************/
+
+function clockIn() {
+
+  const btn =
+    document.getElementById(
+      "clockInBtn"
+    );
+
+
+  btn.disabled = true;
+
+
+  setResult(
+    "📍 กำลังอ่านตำแหน่ง GPS..."
+  );
+
+
+  getGPS(
+
+    function(lat, lng) {
+
+
+      setResult(
+        "⏳ กำลังบันทึกเวลาเข้างาน..."
+      );
+
+
+      callAPI(
+
+        "clockIn",
+
+        {
+
+          idToken:
+            liff.getIDToken(),
+
+          latitude:
+            lat,
+
+          longitude:
+            lng
+
+        },
+
+        function(result) {
+
+
+          if (!result.success) {
+
+            btn.disabled = false;
+
+
+            setResult(
+
+              "❌ " +
+
+              escapeHtml(
+                result.message ||
+                "ไม่สามารถบันทึกเวลาได้"
+              ),
+
+              "bad"
+
+            );
+
+            return;
+
+          }
+
+
+          setResult(
+
+            "✅ บันทึกเข้างานเรียบร้อย<br><br>" +
+
+            "👤 " +
+
+            escapeHtml(
+              result.employee.name
+            ) +
+
+            "<br>" +
+
+            "🕐 " +
+
+            escapeHtml(
+              result.time
+            ) +
+
+            "<br>" +
+
+            "สาย: " +
+
+            escapeHtml(
+              String(
+                result.lateMinutes || 0
+              )
+            ) +
+
+            " นาที",
+
+            "ok"
+
+          );
+
+
+          btn.innerHTML =
+            "✅ เข้างานแล้ว " +
+            result.time;
+
+
+          btn.disabled = true;
+
+        }
+
+      );
+
+    }
+
+  );
+
+}
+
+
+/*************************************************
+ * CLOCK OUT
+ *************************************************/
+
+function clockOut() {
+
+  const btn =
+    document.getElementById(
+      "clockOutBtn"
+    );
+
+
+  btn.disabled = true;
+
+
+  setResult(
+    "📍 กำลังอ่านตำแหน่ง GPS..."
+  );
+
+
+  getGPS(
+
+    function(lat, lng) {
+
+
+      setResult(
+        "⏳ กำลังบันทึกเวลาออกงาน..."
+      );
+
+
+      callAPI(
+
+        "clockOut",
+
+        {
+
+          idToken:
+            liff.getIDToken(),
+
+          latitude:
+            lat,
+
+          longitude:
+            lng
+
+        },
+
+        function(result) {
+
+
+          if (!result.success) {
+
+            btn.disabled = false;
+
+
+            setResult(
+
+              "❌ " +
+
+              escapeHtml(
+                result.message ||
+                "ไม่สามารถบันทึกเวลาได้"
+              ),
+
+              "bad"
+
+            );
+
+            return;
+
+          }
+
+
+          setResult(
+
+            "✅ บันทึกออกงานเรียบร้อย<br><br>" +
+
+            "👤 " +
+
+            escapeHtml(
+              result.employee.name
+            ) +
+
+            "<br>" +
+
+            "🕐 " +
+
+            escapeHtml(
+              result.time
+            ) +
+
+            "<br>" +
+
+            "เวลาทำงาน: " +
+
+            escapeHtml(
+              result.workTime
+            ) +
+
+            "<br>" +
+
+            "OT: " +
+
+            escapeHtml(
+              String(
+                result.otHours || 0
+              )
+            ) +
+
+            " ชั่วโมง",
+
+            "ok"
+
+          );
+
+
+          btn.innerHTML =
+            "✅ ออกงานแล้ว " +
+            result.time;
+
+
+          btn.disabled = true;
+
+        }
+
+      );
+
+    }
+
+  );
+
+}
+
+
+/*************************************************
+ * GPS
+ *************************************************/
+
+function getGPS(
+  callback
+) {
+
+  if (
+    !navigator.geolocation
+  ) {
+
+    setResult(
+      "❌ อุปกรณ์ไม่รองรับ GPS",
+      "bad"
+    );
+
+    return;
+
+  }
+
+
+  navigator.geolocation.getCurrentPosition(
+
+    function(position) {
+
+      callback(
+
+        position.coords.latitude,
+
+        position.coords.longitude
+
+      );
+
+    },
+
+
+    function(error) {
+
+      let message =
+        "ไม่สามารถอ่านตำแหน่งได้";
+
+
+      if (error.code === 1) {
+
+        message =
+          "กรุณาอนุญาตให้ระบบใช้ตำแหน่ง GPS";
+
+      }
+
+
+      if (error.code === 2) {
+
+        message =
+          "ไม่สามารถระบุตำแหน่งได้";
+
+      }
+
+
+      if (error.code === 3) {
+
+        message =
+          "GPS ใช้เวลานานเกินไป";
+
+      }
+
+
+      setResult(
+        "❌ " + message,
+        "bad"
+      );
+
+
+      document
+        .getElementById(
+          "clockInBtn"
+        )
+        .disabled = false;
+
+
+      document
+        .getElementById(
+          "clockOutBtn"
+        )
+        .disabled = false;
+
+    },
+
+
+    {
+
+      enableHighAccuracy:
+        true,
+
+      timeout:
+        15000,
+
+      maximumAge:
+        0
+
+    }
+
+  );
+
+}
+
+
+/*************************************************
+ * CALL API
+ *************************************************/
+
+function callAPI(
+  action,
+  params,
+  callback
+) {
+
+  const callbackName =
+    "apiCallback_" +
+    Date.now();
+
+
+  window[callbackName] =
+    function(result) {
+
+      try {
+
+        callback(result);
+
+      }
+
+      finally {
+
+        delete window[
+          callbackName
+        ];
+
+        if (
+          script &&
+          script.parentNode
+        ) {
+
+          script.parentNode
+            .removeChild(
+              script
+            );
+
+        }
+
+      }
+
+    };
+
+
+  const query =
+    new URLSearchParams();
+
+
+  query.set(
+    "api",
+    "1"
+  );
+
+
+  query.set(
+    "action",
+    action
+  );
+
+
+  query.set(
+    "callback",
+    callbackName
+  );
+
+
+  Object.keys(params)
+    .forEach(function(key) {
+
+      query.set(
+        key,
+        params[key]
+      );
+
+    });
+
+
+  const script =
+    document.createElement(
+      "script"
+    );
+
+
+  script.src =
+    API_URL +
+    "?" +
+    query.toString();
+
+
+  script.onerror =
+    function() {
+
+      callback({
+
+        success: false,
+
+        message:
+          "ไม่สามารถเชื่อมต่อ API ได้"
+
+      });
+
+    };
+
+
+  document
+    .body
+    .appendChild(
+      script
+    );
+
+}
+
+
+/*************************************************
+ * ESCAPE HTML
+ *************************************************/
+
+function escapeHtml(
+  text
+) {
+
+  return String(
+    text || ''
+  )
+
+  .replace(
+    /&/g,
+    '&amp;'
+  )
+
+  .replace(
+    /</g,
+    '&lt;'
+  )
+
+  .replace(
+    />/g,
+    '&gt;'
+  )
+
+  .replace(
+    /"/g,
+    '&quot;'
+  )
+
+  .replace(
+    /'/g,
+    '&#039;'
+  );
+
+}
+
+
+/*************************************************
+ * START
+ *************************************************/
 
 initLIFF();
 
