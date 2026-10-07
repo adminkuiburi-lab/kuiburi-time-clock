@@ -1,273 +1,597 @@
 <!DOCTYPE html>
 <html lang="th">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1.0">
 
-  <title>KUIBURI TIME CLOCK</title>
+<meta charset="UTF-8">
 
-  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+<title>
+KUIBURI TIME CLOCK
+</title>
 
-    body {
-      margin: 0;
-      font-family: Arial, "Noto Sans Thai", sans-serif;
-      background: #f4f6f8;
-      color: #222;
-    }
 
-    .container {
-      max-width: 480px;
-      margin: 0 auto;
-      padding: 20px;
-    }
+<script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 
-    .header {
-      text-align: center;
-      margin-bottom: 20px;
-    }
 
-    .hotel {
-      font-size: 24px;
-      font-weight: bold;
-      margin-bottom: 5px;
-    }
+<style>
 
-    .subtitle {
-      color: #666;
-      font-size: 15px;
-    }
+* {
+  box-sizing: border-box;
+}
 
-    .card {
-      background: white;
-      border-radius: 18px;
-      padding: 20px;
-      margin-bottom: 16px;
-      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
-    }
 
-    .profile {
-      text-align: center;
-    }
+body {
 
-    .profile img {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      object-fit: cover;
-      margin-bottom: 10px;
-    }
+  margin: 0;
 
-    .name {
-      font-size: 20px;
-      font-weight: bold;
-      margin-bottom: 6px;
-    }
+  font-family:
+    Arial,
+    "Noto Sans Thai",
+    sans-serif;
 
-    .info {
-      color: #666;
-      line-height: 1.7;
-      font-size: 14px;
-    }
+  background:
+    #f4f6f8;
 
-    .status {
-      margin-top: 15px;
-      padding: 12px;
-      border-radius: 12px;
-      text-align: center;
-      background: #f1f3f5;
-    }
+  color:
+    #222;
 
-    .status.ok {
-      background: #e8f7ed;
-      color: #19763b;
-    }
+}
 
-    .status.work {
-      background: #fff4d6;
-      color: #8a6500;
-    }
 
-    button {
-      width: 100%;
-      border: 0;
-      border-radius: 14px;
-      padding: 16px;
-      font-size: 18px;
-      font-weight: bold;
-      cursor: pointer;
-      margin-top: 10px;
-    }
+.container {
 
-    button:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
+  max-width:
+    480px;
 
-    .btn-in {
-      background: #198754;
-      color: white;
-    }
+  margin:
+    auto;
 
-    .btn-out {
-      background: #dc3545;
-      color: white;
-    }
+  padding:
+    20px;
 
-    .message {
-      text-align: center;
-      padding: 15px;
-      border-radius: 12px;
-      margin-top: 15px;
-      display: none;
-      white-space: pre-line;
-    }
+}
 
-    .message.success {
-      display: block;
-      background: #e8f7ed;
-      color: #176b37;
-    }
 
-    .message.error {
-      display: block;
-      background: #fdeaea;
-      color: #a12222;
-    }
+.card {
 
-    .loading {
-      text-align: center;
-      padding: 30px;
-      color: #666;
-    }
+  background:
+    white;
 
-    .gps {
-      font-size: 13px;
-      color: #777;
-      text-align: center;
-      margin-top: 12px;
-    }
+  border-radius:
+    18px;
 
-    .footer {
-      text-align: center;
-      color: #999;
-      font-size: 12px;
-      margin-top: 20px;
-    }
-  </style>
+  padding:
+    22px;
+
+  margin-bottom:
+    16px;
+
+  box-shadow:
+    0 4px 15px
+    rgba(0,0,0,0.08);
+
+}
+
+
+.hotel {
+
+  text-align:
+    center;
+
+  font-size:
+    14px;
+
+  color:
+    #777;
+
+  margin-bottom:
+    5px;
+
+}
+
+
+.title {
+
+  text-align:
+    center;
+
+  font-size:
+    25px;
+
+  font-weight:
+    bold;
+
+  margin:
+    0 0 5px;
+
+}
+
+
+.subtitle {
+
+  text-align:
+    center;
+
+  color:
+    #777;
+
+  font-size:
+    14px;
+
+}
+
+
+.profile {
+
+  display:
+    grid;
+
+  grid-template-columns:
+    90px 1fr;
+
+  gap:
+    8px;
+
+  font-size:
+    15px;
+
+}
+
+
+.label {
+
+  color:
+    #777;
+
+}
+
+
+.value {
+
+  font-weight:
+    bold;
+
+}
+
+
+.status {
+
+  text-align:
+    center;
+
+  padding:
+    16px;
+
+  border-radius:
+    14px;
+
+  background:
+    #f1f3f5;
+
+  margin-top:
+    15px;
+
+}
+
+
+.status-title {
+
+  font-size:
+    20px;
+
+  font-weight:
+    bold;
+
+}
+
+
+.status-detail {
+
+  margin-top:
+    8px;
+
+  line-height:
+    1.8;
+
+  color:
+    #555;
+
+}
+
+
+button {
+
+  width:
+    100%;
+
+  border:
+    none;
+
+  border-radius:
+    14px;
+
+  padding:
+    17px;
+
+  font-size:
+    18px;
+
+  font-weight:
+    bold;
+
+  cursor:
+    pointer;
+
+  margin-top:
+    10px;
+
+}
+
+
+.btn-in {
+
+  background:
+    #198754;
+
+  color:
+    white;
+
+}
+
+
+.btn-out {
+
+  background:
+    #dc3545;
+
+  color:
+    white;
+
+}
+
+
+button:disabled {
+
+  opacity:
+    0.45;
+
+  cursor:
+    not-allowed;
+
+}
+
+
+.message {
+
+  padding:
+    14px;
+
+  border-radius:
+    12px;
+
+  margin-top:
+    15px;
+
+  display:
+    none;
+
+  text-align:
+    center;
+
+}
+
+
+.message.success {
+
+  display:
+    block;
+
+  background:
+    #d1e7dd;
+
+  color:
+    #0f5132;
+
+}
+
+
+.message.error {
+
+  display:
+    block;
+
+  background:
+    #f8d7da;
+
+  color:
+    #842029;
+
+}
+
+
+.loading {
+
+  position:
+    fixed;
+
+  inset:
+    0;
+
+  background:
+    rgba(255,255,255,0.95);
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  z-index:
+    9999;
+
+  font-size:
+    18px;
+
+}
+
+
+.hidden {
+
+  display:
+    none !important;
+
+}
+
+
+.gps {
+
+  font-size:
+    13px;
+
+  color:
+    #777;
+
+  margin-top:
+    10px;
+
+  text-align:
+    center;
+
+}
+
+
+</style>
+
 </head>
+
 
 <body>
 
-<div class="container">
 
-  <div class="header">
-    <div class="hotel">
-      🏨 KUIBURI TIME CLOCK
-    </div>
+<div
+  id="loading"
+  class="loading"
+>
 
-    <div class="subtitle">
-      ระบบบันทึกเวลาเข้า - ออกงาน
-    </div>
-  </div>
-
-  <!-- LOADING -->
-  <div id="loading"
-       class="card loading">
-    กำลังเชื่อมต่อ LINE...
-  </div>
-
-  <!-- PROFILE -->
-  <div id="profileCard"
-       class="card profile"
-       style="display:none;">
-
-    <img id="profileImage"
-         src=""
-         alt="LINE Profile">
-
-    <div id="employeeName"
-         class="name">
-    </div>
-
-    <div id="employeeInfo"
-         class="info">
-    </div>
-
-    <div id="todayStatus"
-         class="status">
-    </div>
-  </div>
-
-  <!-- ACTION -->
-  <div id="actionCard"
-       class="card"
-       style="display:none;">
-
-    <button id="clockInBtn"
-            class="btn-in"
-            onclick="clockIn()">
-      🟢 เข้างาน
-    </button>
-
-    <button id="clockOutBtn"
-            class="btn-out"
-            onclick="clockOut()">
-      🔴 ออกงาน
-    </button>
-
-    <div id="gpsStatus"
-         class="gps">
-      📍 กำลังเตรียม GPS...
-    </div>
-
-    <div id="message"
-         class="message">
-    </div>
-
-  </div>
-
-  <div class="footer">
-    KUIBURI HOTEL & RESORT
-  </div>
+กำลังเชื่อมต่อระบบ...
 
 </div>
 
+
+<div
+  class="container"
+  id="app"
+  style="display:none;"
+>
+
+
+  <!-- HEADER -->
+
+  <div class="card">
+
+    <div class="hotel">
+
+      KUIBURI HOTEL & RESORT
+
+    </div>
+
+
+    <h1 class="title">
+
+      KUIBURI TIME CLOCK
+
+    </h1>
+
+
+    <div class="subtitle">
+
+      ระบบบันทึกเวลาเข้า - ออกงาน
+
+    </div>
+
+  </div>
+
+
+  <!-- PROFILE -->
+
+  <div class="card">
+
+    <div class="profile">
+
+      <div class="label">
+        รหัสพนักงาน
+      </div>
+
+      <div
+        class="value"
+        id="employeeId"
+      >
+        -
+      </div>
+
+
+      <div class="label">
+        ชื่อ
+      </div>
+
+      <div
+        class="value"
+        id="employeeName"
+      >
+        -
+      </div>
+
+
+      <div class="label">
+        แผนก
+      </div>
+
+      <div
+        class="value"
+        id="employeeDepartment"
+      >
+        -
+      </div>
+
+
+      <div class="label">
+        กะ
+      </div>
+
+      <div
+        class="value"
+        id="employeeShift"
+      >
+        -
+      </div>
+
+
+      <div class="label">
+        เวลา
+      </div>
+
+      <div
+        class="value"
+        id="employeeShiftTime"
+      >
+        -
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- STATUS -->
+
+  <div class="card">
+
+    <div class="status">
+
+      <div
+        class="status-title"
+        id="statusTitle"
+      >
+        กำลังตรวจสอบ...
+      </div>
+
+
+      <div
+        class="status-detail"
+        id="statusDetail"
+      >
+        -
+      </div>
+
+    </div>
+
+
+    <div
+      id="gpsStatus"
+      class="gps"
+    >
+      ระบบจะขอตำแหน่ง GPS เมื่อกดเข้างานหรือออกงาน
+    </div>
+
+
+    <button
+      id="clockInBtn"
+      class="btn-in"
+      onclick="handleClockIn()"
+    >
+      🟢 เข้างาน
+    </button>
+
+
+    <button
+      id="clockOutBtn"
+      class="btn-out"
+      onclick="handleClockOut()"
+    >
+      🔴 ออกงาน
+    </button>
+
+
+    <div
+      id="message"
+      class="message"
+    ></div>
+
+  </div>
+
+
+</div>
+
+
 <script>
 
-/*************************************************
+/* =================================================
  * CONFIG
- *************************************************/
+ * ================================================= */
 
-/*
- * IMPORTANT
- * LIFF ID ที่ถูกต้อง
- */
 const LIFF_ID =
   '2011898137-tsjk9yOf';
 
 
-/*
- * Google Apps Script Web App
- */
 const API_URL =
   'https://script.google.com/macros/s/AKfycbzlrkbwA4YsXhCOTwuqHneIVeGIYjbthK7qpsAvMsKfXAkEytP28hh0WE04wqf25_ZI/exec';
 
 
-let lineUserId = '';
-let employee = null;
+/* =================================================
+ * GLOBAL
+ * ================================================= */
+
+let lineUserId =
+  '';
 
 
-/*************************************************
- * START
- *************************************************/
+let employee =
+  null;
 
-window.onload = async function() {
+
+let currentStatus =
+  null;
+
+
+/* =================================================
+ * INIT
+ * ================================================= */
+
+window.addEventListener(
+  'load',
+  init
+);
+
+
+async function init() {
 
   try {
 
@@ -275,28 +599,32 @@ window.onload = async function() {
       'กำลังเชื่อมต่อ LINE...'
     );
 
-    /*
-     * เริ่ม LIFF
-     */
+
     await liff.init({
-      liffId: LIFF_ID
+      liffId:
+        LIFF_ID
     });
 
 
     /*
      * ถ้ายังไม่ได้ Login
      */
-    if (!liff.isLoggedIn()) {
+
+    if (
+      !liff.isLoggedIn()
+    ) {
 
       liff.login();
 
       return;
+
     }
 
 
     /*
      * อ่าน LINE Profile
      */
+
     const profile =
       await liff.getProfile();
 
@@ -312,47 +640,57 @@ window.onload = async function() {
       throw new Error(
         'ไม่สามารถอ่าน LINE User ID ได้'
       );
+
     }
-
-
-    console.log(
-      'LINE User ID:',
-      lineUserId
-    );
 
 
     /*
      * โหลดข้อมูลพนักงาน
      */
+
     await loadProfile();
 
-  }
 
-  catch (error) {
+    /*
+     * โหลดสถานะ
+     */
+
+    await loadStatus();
+
+
+    hideLoading();
+
+
+    document
+      .getElementById(
+        'app'
+      )
+      .style.display =
+        'block';
+
+
+  } catch (err) {
 
     console.error(
-      'LIFF ERROR:',
-      error
+      err
     );
 
-    showError(
-      error.message ||
-      'ไม่สามารถเชื่อมต่อระบบได้'
+
+    showFatalError(
+      err.message ||
+      String(err)
     );
+
   }
-};
+
+}
 
 
-/*************************************************
+/* =================================================
  * LOAD PROFILE
- *************************************************/
+ * ================================================= */
 
 async function loadProfile() {
-
-  showLoading(
-    'กำลังตรวจสอบข้อมูลพนักงาน...'
-  );
-
 
   const result =
     await callAPI(
@@ -361,7 +699,7 @@ async function loadProfile() {
 
 
   console.log(
-    'PROFILE API:',
+    'PROFILE RESULT',
     result
   );
 
@@ -369,23 +707,40 @@ async function loadProfile() {
   if (!result.success) {
 
     throw new Error(
-      result.message ||
+      result.error ||
       'ไม่สามารถโหลดข้อมูลพนักงานได้'
     );
+
   }
 
 
   /*
-   * ตรวจว่าพบพนักงานหรือไม่
+   * จุดสำคัญ
+   *
+   * ตรวจ employee ด้วย
+   * เพื่อไม่ให้เกิดปัญหาเดิม
    */
+
   if (
-    result.authorized === false ||
+    result.authorized !== true &&
     !result.employee
   ) {
 
     throw new Error(
       'LINE นี้ยังไม่ได้ผูกกับข้อมูลพนักงาน'
     );
+
+  }
+
+
+  if (
+    !result.employee
+  ) {
+
+    throw new Error(
+      'ไม่พบข้อมูลพนักงาน'
+    );
+
   }
 
 
@@ -397,31 +752,39 @@ async function loadProfile() {
     result
   );
 
-
-  hideLoading();
 }
 
 
-/*************************************************
+/* =================================================
  * DISPLAY PROFILE
- *************************************************/
+ * ================================================= */
 
-function displayProfile(result) {
+function displayProfile(
+  result
+) {
+
+  const emp =
+    result.employee;
+
+
+  /*
+   * รองรับทั้ง
+   * id
+   * employeeId
+   */
+
+  const employeeId =
+    emp.id ||
+    emp.employeeId ||
+    '-';
+
 
   document
     .getElementById(
-      'profileCard'
+      'employeeId'
     )
-    .style.display =
-      'block';
-
-
-  document
-    .getElementById(
-      'actionCard'
-    )
-    .style.display =
-      'block';
+    .textContent =
+      employeeId;
 
 
   document
@@ -429,536 +792,286 @@ function displayProfile(result) {
       'employeeName'
     )
     .textContent =
-      employee.name || '';
-
-
-  /*
-   * API ใช้ employee.id
-   * รองรับ employee.employeeId ด้วย
-   */
-  const employeeId =
-    employee.id ||
-    employee.employeeId ||
-    '';
-
-
-  /*
-   * แปลงเวลา ถ้า API ส่ง Object มา
-   */
-  const shiftStart =
-    formatShiftTime(
-      employee.shiftStart
-    );
-
-
-  const shiftEnd =
-    formatShiftTime(
-      employee.shiftEnd
-    );
+      emp.name ||
+      '-';
 
 
   document
     .getElementById(
-      'employeeInfo'
+      'employeeDepartment'
     )
-    .innerHTML =
-
-      'รหัสพนักงาน: ' +
-      escapeHtml(employeeId) +
-
-      '<br>' +
-
-      escapeHtml(
-        employee.department || ''
-      ) +
-
-      '<br>' +
-
-      escapeHtml(
-        employee.shiftName || ''
-      ) +
-
-      ' — ' +
-
-      escapeHtml(
-        shiftStart
-      ) +
-
-      '–' +
-
-      escapeHtml(
-        shiftEnd
-      );
+    .textContent =
+      emp.department ||
+      '-';
 
 
-  loadLinePicture();
+  const shiftText =
+    emp.shiftName ||
+    emp.shift ||
+    '-';
 
 
-  updateStatus(
+  document
+    .getElementById(
+      'employeeShift'
+    )
+    .textContent =
+      shiftText;
+
+
+  const start =
+    emp.shiftStart ||
+    '';
+
+
+  const end =
+    emp.shiftEnd ||
+    '';
+
+
+  document
+    .getElementById(
+      'employeeShiftTime'
+    )
+    .textContent =
+      start && end
+        ? start + ' - ' + end
+        : '-';
+
+}
+
+
+/* =================================================
+ * LOAD STATUS
+ * ================================================= */
+
+async function loadStatus() {
+
+  const result =
+    await callAPI(
+      'status'
+    );
+
+
+  console.log(
+    'STATUS RESULT',
+    result
+  );
+
+
+  if (!result.success) {
+
+    throw new Error(
+      result.error ||
+      'ไม่สามารถตรวจสอบสถานะได้'
+    );
+
+  }
+
+
+  currentStatus =
+    result.status;
+
+
+  displayStatus(
     result.status
   );
+
 }
 
 
-/*************************************************
- * FORMAT SHIFT TIME
- *************************************************/
+/* =================================================
+ * DISPLAY STATUS
+ * ================================================= */
 
-function formatShiftTime(value) {
-
-  if (!value) {
-    return '';
-  }
-
-
-  /*
-   * ถ้าเป็นข้อความอยู่แล้ว
-   */
-  if (
-    typeof value === 'string'
-  ) {
-
-    /*
-     * ป้องกัน [object Object]
-     */
-    if (
-      value === '[object Object]'
-    ) {
-
-      return '';
-    }
-
-    return value;
-  }
-
-
-  /*
-   * ถ้าเป็น Object
-   * เช่น {hour: 8, minute: 0}
-   */
-  if (
-    typeof value === 'object'
-  ) {
-
-    const hour =
-      Number(
-        value.hour || 0
-      );
-
-
-    const minute =
-      Number(
-        value.minute || 0
-      );
-
-
-    return (
-      String(hour).padStart(2, '0') +
-      ':' +
-      String(minute).padStart(2, '0')
-    );
-  }
-
-
-  return '';
-}
-
-
-/*************************************************
- * ESCAPE HTML
- *************************************************/
-
-function escapeHtml(value) {
-
-  return String(value || '')
-    .replace(
-      /&/g,
-      '&amp;'
-    )
-    .replace(
-      /</g,
-      '&lt;'
-    )
-    .replace(
-      />/g,
-      '&gt;'
-    )
-    .replace(
-      /"/g,
-      '&quot;'
-    )
-    .replace(
-      /'/g,
-      '&#039;'
-    );
-}
-
-
-/*************************************************
- * LOAD LINE PICTURE
- *************************************************/
-
-async function loadLinePicture() {
-
-  try {
-
-    const profile =
-      await liff.getProfile();
-
-
-    if (
-      profile.pictureUrl
-    ) {
-
-      document
-        .getElementById(
-          'profileImage'
-        )
-        .src =
-          profile.pictureUrl;
-    }
-
-  }
-
-  catch (error) {
-
-    console.log(
-      'Profile picture error:',
-      error
-    );
-  }
-}
-
-
-/*************************************************
- * STATUS
- *************************************************/
-
-function updateStatus(status) {
-
-  const box =
-    document.getElementById(
-      'todayStatus'
-    );
-
+function displayStatus(
+  status
+) {
 
   if (!status) {
-
-    box.textContent =
-      'สถานะวันนี้: ยังไม่มีข้อมูล';
-
     return;
   }
 
 
-  let text =
-    'สถานะวันนี้: ';
+  const title =
+    document.getElementById(
+      'statusTitle'
+    );
+
+
+  const detail =
+    document.getElementById(
+      'statusDetail'
+    );
+
+
+  const clockInBtn =
+    document.getElementById(
+      'clockInBtn'
+    );
+
+
+  const clockOutBtn =
+    document.getElementById(
+      'clockOutBtn'
+    );
+
+
+  title.textContent =
+    status.text ||
+    '-';
+
+
+  let html =
+    '';
 
 
   if (
-    status.clockIn
+    status.checkIn
   ) {
 
-    text +=
-      'เข้างานแล้ว ' +
-      status.clockIn;
+    html +=
+      'เวลาเข้า: ' +
+      status.checkIn +
+      '<br>';
 
-  }
-
-  else {
-
-    text +=
-      'ยังไม่ได้เข้างาน';
   }
 
 
   if (
-    status.clockOut
+    status.checkOut
   ) {
 
-    text +=
-      ' | ออกงาน ' +
-      status.clockOut;
+    html +=
+      'เวลาออก: ' +
+      status.checkOut +
+      '<br>';
+
   }
-
-
-  box.textContent =
-    text;
 
 
   if (
-    status.clockOut
+    Number(
+      status.lateMinutes || 0
+    ) > 0
   ) {
 
-    box.className =
-      'status ok';
+    html +=
+      'สาย: ' +
+      Number(
+        status.lateMinutes
+      ) +
+      ' นาที<br>';
 
   }
 
-  else if (
-    status.clockIn
+
+  if (
+    status.workTime
   ) {
 
-    box.className =
-      'status work';
+    html +=
+      'เวลาทำงาน: ' +
+      status.workTime +
+      '<br>';
 
   }
 
-  else {
 
-    box.className =
-      'status';
+  if (
+    Number(
+      status.otHours || 0
+    ) > 0
+  ) {
+
+    html +=
+      'OT: ' +
+      Number(
+        status.otHours
+      ).toFixed(2) +
+      ' ชั่วโมง<br>';
+
   }
+
+
+  if (
+    status.otStatus
+  ) {
+
+    html +=
+      'สถานะ OT: ' +
+      status.otStatus;
+
+  }
+
+
+  detail.innerHTML =
+    html ||
+    '';
 
 
   /*
-   * ป้องกันกดซ้ำ
+   * ปุ่ม
    */
-  document
-    .getElementById(
-      'clockInBtn'
-    )
-    .disabled =
-      !!status.clockIn;
 
+  if (
+    status.state ===
+    'NOT_STARTED'
+  ) {
 
-  document
-    .getElementById(
-      'clockOutBtn'
-    )
-    .disabled =
-      !status.clockIn ||
-      !!status.clockOut;
+    clockInBtn.disabled =
+      false;
+
+    clockOutBtn.disabled =
+      true;
+
+  }
+  else if (
+    status.state ===
+    'CLOCKED_IN'
+  ) {
+
+    clockInBtn.disabled =
+      true;
+
+    clockOutBtn.disabled =
+      false;
+
+  }
+  else if (
+    status.state ===
+    'CLOCKED_OUT'
+  ) {
+
+    clockInBtn.disabled =
+      true;
+
+    clockOutBtn.disabled =
+      true;
+
+  }
+  else {
+
+    clockInBtn.disabled =
+      false;
+
+    clockOutBtn.disabled =
+      true;
+
+  }
+
 }
 
 
-/*************************************************
- * CLOCK IN
- *************************************************/
-
-async function clockIn() {
-
-  clearMessage();
-
-
-  try {
-
-    disableButtons();
-
-
-    showMessage(
-      'กำลังอ่านตำแหน่ง GPS...',
-      false
-    );
-
-
-    const gps =
-      await getGPS();
-
-
-    document
-      .getElementById(
-        'gpsStatus'
-      )
-      .textContent =
-
-        '📍 GPS: ' +
-        gps.latitude.toFixed(6) +
-        ', ' +
-        gps.longitude.toFixed(6);
-
-
-    showMessage(
-      'กำลังบันทึกเวลาเข้างาน...',
-      false
-    );
-
-
-    const result =
-      await callAPI(
-        'clockIn',
-        gps
-      );
-
-
-    if (!result.success) {
-
-      throw new Error(
-        result.message ||
-        'ไม่สามารถบันทึกเวลาเข้างานได้'
-      );
-    }
-
-
-    let text =
-      'เข้างานเรียบร้อยค่ะ\n' +
-      'เวลา: ' +
-      result.time;
-
-
-    if (
-      Number(
-        result.lateMinutes || 0
-      ) > 0
-    ) {
-
-      text +=
-        '\nสาย: ' +
-        result.lateMinutes +
-        ' นาที';
-
-    }
-
-    else {
-
-      text +=
-        '\nสถานะ: ปกติ';
-    }
-
-
-    showSuccess(
-      text
-    );
-
-
-    await loadProfile();
-
-  }
-
-  catch (error) {
-
-    showError(
-      error.message
-    );
-
-
-    enableButtons();
-  }
-}
-
-
-/*************************************************
- * CLOCK OUT
- *************************************************/
-
-async function clockOut() {
-
-  clearMessage();
-
-
-  try {
-
-    disableButtons();
-
-
-    showMessage(
-      'กำลังอ่านตำแหน่ง GPS...',
-      false
-    );
-
-
-    const gps =
-      await getGPS();
-
-
-    document
-      .getElementById(
-        'gpsStatus'
-      )
-      .textContent =
-
-        '📍 GPS: ' +
-        gps.latitude.toFixed(6) +
-        ', ' +
-        gps.longitude.toFixed(6);
-
-
-    showMessage(
-      'กำลังบันทึกเวลาออกงาน...',
-      false
-    );
-
-
-    const result =
-      await callAPI(
-        'clockOut',
-        gps
-      );
-
-
-    if (!result.success) {
-
-      throw new Error(
-        result.message ||
-        'ไม่สามารถบันทึกเวลาออกงานได้'
-      );
-    }
-
-
-    let text =
-      'ออกงานเรียบร้อยค่ะ\n' +
-      'เวลา: ' +
-      result.time;
-
-
-    if (
-      Number(
-        result.otHours || 0
-      ) > 0
-    ) {
-
-      text +=
-        '\n⭐ OT: ' +
-        result.otHours +
-        ' ชั่วโมง';
-
-    }
-
-    else {
-
-      text +=
-        '\nไม่มี OT';
-    }
-
-
-    if (
-      result.workTime
-    ) {
-
-      text +=
-        '\nเวลาทำงาน: ' +
-        result.workTime;
-    }
-
-
-    showSuccess(
-      text
-    );
-
-
-    await loadProfile();
-
-  }
-
-  catch (error) {
-
-    showError(
-      error.message
-    );
-
-
-    enableButtons();
-  }
-}
-
-
-/*************************************************
- * CALL API
- *************************************************/
+/* =================================================
+ * API CALL
+ *
+ * ใช้ JSONP
+ * ================================================= */
 
 function callAPI(
   action,
-  gps
+  extraParams = {}
 ) {
 
   return new Promise(
@@ -989,10 +1102,6 @@ function callAPI(
       );
 
 
-      /*
-       * สำคัญ
-       * ส่ง LINE User ID ที่ได้จาก LIFF
-       */
       params.set(
         'userId',
         lineUserId
@@ -1005,26 +1114,18 @@ function callAPI(
       );
 
 
-      /*
-       * GPS
-       */
-      if (gps) {
+      Object.keys(
+        extraParams
+      ).forEach(
+        function(key) {
 
-        params.set(
-          'latitude',
-          String(
-            gps.latitude
-          )
-        );
+          params.set(
+            key,
+            extraParams[key]
+          );
 
-
-        params.set(
-          'longitude',
-          String(
-            gps.longitude
-          )
-        );
-      }
+        }
+      );
 
 
       const script =
@@ -1033,74 +1134,67 @@ function callAPI(
         );
 
 
-      let finished =
-        false;
-
-
-      const timer =
+      const timeout =
         setTimeout(
           function() {
 
-            if (finished) {
-              return;
-            }
-
-
-            finished = true;
-
-
             cleanup();
-
 
             reject(
               new Error(
-                'API ไม่ตอบสนอง'
+                'เชื่อมต่อระบบไม่สำเร็จ'
               )
             );
 
           },
-          15000
+          20000
         );
 
 
-      window[
-        callbackName
-      ] =
+      window[callbackName] =
         function(data) {
 
-          if (finished) {
-            return;
-          }
-
-
-          finished = true;
-
-
-          clearTimeout(
-            timer
-          );
-
-
           cleanup();
-
 
           resolve(
             data
           );
+
         };
+
+
+      script.src =
+        API_URL +
+        '?' +
+        params.toString();
+
+
+      script.onerror =
+        function() {
+
+          cleanup();
+
+          reject(
+            new Error(
+              'ไม่สามารถเชื่อมต่อ API ได้'
+            )
+          );
+
+        };
+
+
+      document
+        .body
+        .appendChild(
+          script
+        );
 
 
       function cleanup() {
 
-        try {
-
-          delete window[
-            callbackName
-          ];
-
-        }
-
-        catch (error) {}
+        clearTimeout(
+          timeout
+        );
 
 
         if (
@@ -1111,63 +1205,267 @@ function callAPI(
             .removeChild(
               script
             );
+
         }
+
+
+        try {
+
+          delete window[
+            callbackName
+          ];
+
+        } catch (e) {}
+
       }
-
-
-      script.onerror =
-        function() {
-
-          if (finished) {
-            return;
-          }
-
-
-          finished = true;
-
-
-          clearTimeout(
-            timer
-          );
-
-
-          cleanup();
-
-
-          reject(
-            new Error(
-              'ไม่สามารถเชื่อมต่อ API ได้'
-            )
-          );
-        };
-
-
-      script.src =
-        API_URL +
-        '?' +
-        params.toString();
-
-
-      console.log(
-        'API URL:',
-        script.src
-      );
-
-
-      document
-        .body
-        .appendChild(
-          script
-        );
 
     }
   );
+
 }
 
 
-/*************************************************
+/* =================================================
+ * CLOCK IN
+ * ================================================= */
+
+async function handleClockIn() {
+
+  clearMessage();
+
+
+  try {
+
+    setButtonsDisabled(
+      true
+    );
+
+
+    showMessage(
+      'กำลังอ่านตำแหน่ง GPS...',
+      'success'
+    );
+
+
+    const position =
+      await getGPS();
+
+
+    showMessage(
+      'กำลังบันทึกเวลาเข้างาน...',
+      'success'
+    );
+
+
+    const result =
+      await callAPI(
+        'clockIn',
+        {
+
+          latitude:
+            position.latitude,
+
+          longitude:
+            position.longitude
+
+        }
+      );
+
+
+    if (!result.success) {
+
+      throw new Error(
+        result.error ||
+        'ไม่สามารถบันทึกเวลาเข้างานได้'
+      );
+
+    }
+
+
+    showMessage(
+      result.message ||
+      'บันทึกเวลาเข้างานเรียบร้อย',
+      'success'
+    );
+
+
+    await loadStatus();
+
+
+  } catch (err) {
+
+    console.error(
+      err
+    );
+
+
+    showMessage(
+      err.message ||
+      String(err),
+      'error'
+    );
+
+
+  } finally {
+
+    setButtonsDisabled(
+      false
+    );
+
+
+    /*
+     * ให้สถานะจาก server
+     * เป็นตัวควบคุมปุ่ม
+     */
+
+    if (currentStatus) {
+
+      displayStatus(
+        currentStatus
+      );
+
+    }
+
+  }
+
+}
+
+
+/* =================================================
+ * CLOCK OUT
+ * ================================================= */
+
+async function handleClockOut() {
+
+  clearMessage();
+
+
+  try {
+
+    setButtonsDisabled(
+      true
+    );
+
+
+    showMessage(
+      'กำลังอ่านตำแหน่ง GPS...',
+      'success'
+    );
+
+
+    const position =
+      await getGPS();
+
+
+    showMessage(
+      'กำลังบันทึกเวลาออกงาน...',
+      'success'
+    );
+
+
+    const result =
+      await callAPI(
+        'clockOut',
+        {
+
+          latitude:
+            position.latitude,
+
+          longitude:
+            position.longitude
+
+        }
+      );
+
+
+    if (!result.success) {
+
+      throw new Error(
+        result.error ||
+        'ไม่สามารถบันทึกเวลาออกงานได้'
+      );
+
+    }
+
+
+    let message =
+      result.message ||
+      'บันทึกเวลาออกงานเรียบร้อย';
+
+
+    if (
+      Number(
+        result.otHours || 0
+      ) > 0
+    ) {
+
+      message +=
+        '\nOT ' +
+        Number(
+          result.otHours
+        ).toFixed(2) +
+        ' ชั่วโมง';
+
+
+      if (
+        result.otStatus
+      ) {
+
+        message +=
+          '\nสถานะ: ' +
+          result.otStatus;
+
+      }
+
+    }
+
+
+    showMessage(
+      message,
+      'success'
+    );
+
+
+    await loadStatus();
+
+
+  } catch (err) {
+
+    console.error(
+      err
+    );
+
+
+    showMessage(
+      err.message ||
+      String(err),
+      'error'
+    );
+
+
+  } finally {
+
+    setButtonsDisabled(
+      false
+    );
+
+
+    if (currentStatus) {
+
+      displayStatus(
+        currentStatus
+      );
+
+    }
+
+  }
+
+}
+
+
+/* =================================================
  * GPS
- *************************************************/
+ * ================================================= */
 
 function getGPS() {
 
@@ -1185,6 +1483,7 @@ function getGPS() {
         );
 
         return;
+
       }
 
 
@@ -1192,17 +1491,34 @@ function getGPS() {
 
         function(position) {
 
+          const latitude =
+            position.coords.latitude;
+
+
+          const longitude =
+            position.coords.longitude;
+
+
+          document
+            .getElementById(
+              'gpsStatus'
+            )
+            .textContent =
+              'GPS พร้อมใช้งาน';
+
+
           resolve({
 
             latitude:
-              position.coords.latitude,
+              latitude,
 
             longitude:
-              position.coords.longitude
+              longitude
 
           });
 
         },
+
 
         function(error) {
 
@@ -1211,11 +1527,35 @@ function getGPS() {
 
 
           if (
-            error.code === 1
+            error.code ===
+            1
           ) {
 
             message =
-              'กรุณาอนุญาตให้ระบบเข้าถึงตำแหน่ง GPS';
+              'กรุณาอนุญาตการเข้าถึงตำแหน่ง GPS';
+
+          }
+
+
+          if (
+            error.code ===
+            2
+          ) {
+
+            message =
+              'ไม่สามารถระบุตำแหน่ง GPS ได้';
+
+          }
+
+
+          if (
+            error.code ===
+            3
+          ) {
+
+            message =
+              'อ่านตำแหน่ง GPS ใช้เวลานานเกินไป';
+
           }
 
 
@@ -1224,7 +1564,9 @@ function getGPS() {
               message
             )
           );
+
         },
+
 
         {
 
@@ -1236,35 +1578,113 @@ function getGPS() {
 
           maximumAge:
             0
+
         }
+
       );
+
     }
   );
+
 }
 
 
-/*************************************************
- * UI
- *************************************************/
+/* =================================================
+ * BUTTONS
+ * ================================================= */
 
-function showLoading(text) {
+function setButtonsDisabled(
+  disabled
+) {
 
-  const loading =
+  document
+    .getElementById(
+      'clockInBtn'
+    )
+    .disabled =
+      disabled;
+
+
+  document
+    .getElementById(
+      'clockOutBtn'
+    )
+    .disabled =
+      disabled;
+
+}
+
+
+/* =================================================
+ * MESSAGE
+ * ================================================= */
+
+function showMessage(
+  message,
+  type
+) {
+
+  const el =
+    document.getElementById(
+      'message'
+    );
+
+
+  el.textContent =
+    message || '';
+
+
+  el.className =
+    'message ' +
+    (
+      type ||
+      ''
+    );
+
+}
+
+
+function clearMessage() {
+
+  const el =
+    document.getElementById(
+      'message'
+    );
+
+
+  el.textContent =
+    '';
+
+
+  el.className =
+    'message';
+
+}
+
+
+/* =================================================
+ * LOADING
+ * ================================================= */
+
+function showLoading(
+  text
+) {
+
+  const el =
     document.getElementById(
       'loading'
     );
 
 
-  loading.textContent =
-    text;
+  el.textContent =
+    text ||
+    'กำลังโหลด...';
 
 
-  loading.style.display =
-    'block';
+  el.classList.remove(
+    'hidden'
+  );
 
-
-  loading.style.color =
-    '#666';
 }
 
 
@@ -1274,129 +1694,97 @@ function hideLoading() {
     .getElementById(
       'loading'
     )
-    .style.display =
-      'none';
+    .classList.add(
+      'hidden'
+    );
+
 }
 
 
-function showMessage(text) {
+/* =================================================
+ * FATAL ERROR
+ * ================================================= */
 
-  const box =
+function showFatalError(
+  message
+) {
+
+  hideLoading();
+
+
+  const app =
     document.getElementById(
-      'message'
+      'app'
     );
 
 
-  box.className =
-    'message';
-
-
-  box.textContent =
-    text;
-
-
-  box.style.display =
-    'block';
-}
-
-
-function showSuccess(text) {
-
-  const box =
-    document.getElementById(
-      'message'
-    );
-
-
-  box.className =
-    'message success';
-
-
-  box.textContent =
-    text;
-
-
-  box.style.display =
-    'block';
-}
-
-
-function showError(text) {
-
-  const loading =
-    document.getElementById(
-      'loading'
-    );
-
-
-  loading.style.display =
+  app.style.display =
     'block';
 
 
-  loading.textContent =
-    '❌ ' +
-    (
-      text ||
-      'เกิดข้อผิดพลาด'
+  app.innerHTML =
+
+    '<div class="card">' +
+
+      '<div class="hotel">' +
+        'KUIBURI HOTEL & RESORT' +
+      '</div>' +
+
+      '<h1 class="title">' +
+        'KUIBURI TIME CLOCK' +
+      '</h1>' +
+
+      '<div class="message error" ' +
+        'style="display:block;">' +
+
+        '❌ ' +
+        escapeHTML(
+          message
+        ) +
+
+      '</div>' +
+
+    '</div>';
+
+}
+
+
+/* =================================================
+ * ESCAPE HTML
+ * ================================================= */
+
+function escapeHTML(
+  value
+) {
+
+  return String(
+    value || ''
+  )
+    .replace(
+      /&/g,
+      '&amp;'
+    )
+    .replace(
+      /</g,
+      '&lt;'
+    )
+    .replace(
+      />/g,
+      '&gt;'
+    )
+    .replace(
+      /"/g,
+      '&quot;'
+    )
+    .replace(
+      /'/g,
+      '&#039;'
     );
 
-
-  loading.style.color =
-    '#a12222';
-}
-
-
-function clearMessage() {
-
-  const box =
-    document.getElementById(
-      'message'
-    );
-
-
-  box.style.display =
-    'none';
-}
-
-
-function disableButtons() {
-
-  document
-    .getElementById(
-      'clockInBtn'
-    )
-    .disabled =
-      true;
-
-
-  document
-    .getElementById(
-      'clockOutBtn'
-    )
-    .disabled =
-      true;
-}
-
-
-function enableButtons() {
-
-  document
-    .getElementById(
-      'clockInBtn'
-    )
-    .disabled =
-      false;
-
-
-  document
-    .getElementById(
-      'clockOutBtn'
-    )
-    .disabled =
-      false;
 }
 
 </script>
 
 </body>
+
 </html>
