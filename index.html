@@ -95,6 +95,16 @@ body {
   color: #555;
 }
 
+input {
+  width: 100%;
+  border: 1px solid #ced4da;
+  border-radius: 12px;
+  padding: 15px;
+  font-size: 18px;
+  margin-top: 8px;
+  text-align: center;
+}
+
 button {
   width: 100%;
   border: none;
@@ -113,6 +123,21 @@ button {
 
 .btn-out {
   background: #dc3545;
+  color: white;
+}
+
+.btn-register {
+  background: #0d6efd;
+  color: white;
+}
+
+.btn-confirm {
+  background: #198754;
+  color: white;
+}
+
+.btn-cancel {
+  background: #6c757d;
   color: white;
 }
 
@@ -142,6 +167,12 @@ button:disabled {
   color: #842029;
 }
 
+.message.info {
+  display: block;
+  background: #cff4fc;
+  color: #055160;
+}
+
 .loading {
   position: fixed;
   inset: 0;
@@ -162,6 +193,41 @@ button:disabled {
   color: #777;
   margin-top: 10px;
   text-align: center;
+}
+
+.register-title {
+  text-align: center;
+  font-size: 21px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.register-note {
+  text-align: center;
+  color: #777;
+  line-height: 1.7;
+  font-size: 14px;
+}
+
+.confirm-box {
+  background: #f8f9fa;
+  border-radius: 14px;
+  padding: 16px;
+  margin-top: 15px;
+}
+
+.confirm-row {
+  margin-bottom: 8px;
+}
+
+.confirm-label {
+  color: #777;
+  font-size: 14px;
+}
+
+.confirm-value {
+  font-size: 18px;
+  font-weight: bold;
 }
 
 </style>
@@ -203,9 +269,148 @@ button:disabled {
   </div>
 
 
+  <!-- REGISTRATION -->
+
+  <div
+    id="registrationCard"
+    class="card hidden"
+  >
+
+    <div class="register-title">
+      🔗 ลงทะเบียนพนักงาน
+    </div>
+
+    <div class="register-note">
+      LINE นี้ยังไม่ได้ผูกกับข้อมูลพนักงาน<br>
+      กรุณากรอกรหัสพนักงานของท่าน
+    </div>
+
+    <input
+      id="registerEmployeeId"
+      type="text"
+      placeholder="เช่น EMP0002"
+      autocomplete="off"
+    >
+
+    <button
+      id="checkEmployeeBtn"
+      class="btn-register"
+      onclick="checkRegistration()"
+    >
+      ตรวจสอบรหัสพนักงาน
+    </button>
+
+
+    <div
+      id="registerConfirm"
+      class="confirm-box hidden"
+    >
+
+      <div class="confirm-row">
+
+        <div class="confirm-label">
+          รหัสพนักงาน
+        </div>
+
+        <div
+          class="confirm-value"
+          id="confirmEmployeeId"
+        >
+          -
+        </div>
+
+      </div>
+
+
+      <div class="confirm-row">
+
+        <div class="confirm-label">
+          ชื่อ
+        </div>
+
+        <div
+          class="confirm-value"
+          id="confirmEmployeeName"
+        >
+          -
+        </div>
+
+      </div>
+
+
+      <div class="confirm-row">
+
+        <div class="confirm-label">
+          แผนก
+        </div>
+
+        <div
+          class="confirm-value"
+          id="confirmEmployeeDepartment"
+        >
+          -
+        </div>
+
+      </div>
+
+
+      <div class="confirm-row">
+
+        <div class="confirm-label">
+          กะ
+        </div>
+
+        <div
+          class="confirm-value"
+          id="confirmEmployeeShift"
+        >
+          -
+        </div>
+
+      </div>
+
+
+      <div
+        class="register-note"
+        style="margin-top:12px;"
+      >
+        กรุณาตรวจสอบว่าชื่อเป็นของท่าน
+        ก่อนกดยืนยัน
+      </div>
+
+
+      <button
+        class="btn-confirm"
+        onclick="confirmRegistration()"
+      >
+        ✅ ยืนยันการลงทะเบียน
+      </button>
+
+
+      <button
+        class="btn-cancel"
+        onclick="cancelRegistration()"
+      >
+        ยกเลิก
+      </button>
+
+    </div>
+
+
+    <div
+      id="registrationMessage"
+      class="message"
+    ></div>
+
+  </div>
+
+
   <!-- PROFILE -->
 
-  <div class="card">
+  <div
+    id="profileCard"
+    class="card"
+  >
 
     <div class="profile">
 
@@ -275,7 +480,10 @@ button:disabled {
 
   <!-- STATUS -->
 
-  <div class="card">
+  <div
+    id="statusCard"
+    class="card"
+  >
 
     <div class="status">
 
@@ -357,6 +565,8 @@ let employee = null;
 
 let currentStatus = null;
 
+let registrationEmployee = null;
+
 
 /* =================================================
  * INIT
@@ -410,9 +620,45 @@ async function init() {
     }
 
 
-    await loadProfile();
+    /*
+     * ลองโหลด profile
+     *
+     * ถ้าไม่พบ ให้ไปลงทะเบียน
+     */
 
-    await loadStatus();
+    const profileResult =
+      await callAPI(
+        'profile'
+      );
+
+
+    if (
+      profileResult.success &&
+      profileResult.employee
+    ) {
+
+      employee =
+        profileResult.employee;
+
+
+      displayProfile(
+        profileResult
+      );
+
+
+      await loadStatus();
+
+
+      hideRegistration();
+
+      showMainSystem();
+
+    }
+    else {
+
+      showRegistration();
+
+    }
 
 
     hideLoading();
@@ -420,7 +666,8 @@ async function init() {
 
     document
       .getElementById('app')
-      .style.display = 'block';
+      .style.display =
+        'block';
 
 
   } catch (err) {
@@ -438,58 +685,534 @@ async function init() {
 
 
 /* =================================================
- * LOAD PROFILE
+ * SHOW MAIN SYSTEM
  * ================================================= */
 
-async function loadProfile() {
+function showMainSystem() {
+
+  document
+    .getElementById(
+      'registrationCard'
+    )
+    .classList.add(
+      'hidden'
+    );
+
+
+  document
+    .getElementById(
+      'profileCard'
+    )
+    .classList.remove(
+      'hidden'
+    );
+
+
+  document
+    .getElementById(
+      'statusCard'
+    )
+    .classList.remove(
+      'hidden'
+    );
+
+}
+
+
+/* =================================================
+ * SHOW REGISTRATION
+ * ================================================= */
+
+function showRegistration() {
+
+  document
+    .getElementById(
+      'registrationCard'
+    )
+    .classList.remove(
+      'hidden'
+    );
+
+
+  document
+    .getElementById(
+      'profileCard'
+    )
+    .classList.add(
+      'hidden'
+    );
+
+
+  document
+    .getElementById(
+      'statusCard'
+    )
+    .classList.add(
+      'hidden'
+    );
+
+
+  document
+    .getElementById(
+      'registerEmployeeId'
+    )
+    .value =
+      '';
+
+
+  document
+    .getElementById(
+      'registerEmployeeId'
+    )
+    .focus();
+
+
+  clearRegistrationMessage();
+
+}
+
+
+/* =================================================
+ * HIDE REGISTRATION
+ * ================================================= */
+
+function hideRegistration() {
+
+  document
+    .getElementById(
+      'registrationCard'
+    )
+    .classList.add(
+      'hidden'
+    );
+
+}
+
+
+/* =================================================
+ * CHECK REGISTRATION
+ * ================================================= */
+
+async function checkRegistration() {
+
+  clearRegistrationMessage();
+
+
+  const employeeId =
+    document
+      .getElementById(
+        'registerEmployeeId'
+      )
+      .value
+      .trim()
+      .toUpperCase();
+
+
+  if (!employeeId) {
+
+    showRegistrationMessage(
+      'กรุณากรอกรหัสพนักงาน',
+      'error'
+    );
+
+    return;
+
+  }
+
+
+  try {
+
+    const button =
+      document
+        .getElementById(
+          'checkEmployeeBtn'
+        );
+
+
+    button.disabled =
+      true;
+
+
+    showRegistrationMessage(
+      'กำลังตรวจสอบรหัสพนักงาน...',
+      'info'
+    );
+
+
+    const result =
+      await callAPI(
+        'registerCheck',
+        {
+          employeeId:
+            employeeId
+        }
+      );
+
+
+    if (!result.success) {
+
+      throw new Error(
+        result.error ||
+        'ไม่สามารถตรวจสอบรหัสพนักงานได้'
+      );
+
+    }
+
+
+    if (
+      result.alreadyLinked
+    ) {
+
+      employee =
+        result.employee;
+
+
+      displayProfile({
+        employee:
+          result.employee
+      });
+
+
+      await loadStatus();
+
+
+      hideRegistration();
+
+      showMainSystem();
+
+      return;
+
+    }
+
+
+    registrationEmployee =
+      result.employee;
+
+
+    document
+      .getElementById(
+        'confirmEmployeeId'
+      )
+      .textContent =
+        result.employee.id || '-';
+
+
+    document
+      .getElementById(
+        'confirmEmployeeName'
+      )
+      .textContent =
+        result.employee.name || '-';
+
+
+    document
+      .getElementById(
+        'confirmEmployeeDepartment'
+      )
+      .textContent =
+        result.employee.department || '-';
+
+
+    const shiftText =
+      result.employee.shiftName ||
+      result.employee.shift ||
+      '-';
+
+
+    document
+      .getElementById(
+        'confirmEmployeeShift'
+      )
+      .textContent =
+        shiftText;
+
+
+    document
+      .getElementById(
+        'registerConfirm'
+      )
+      .classList.remove(
+        'hidden'
+      );
+
+
+    showRegistrationMessage(
+      'พบข้อมูลพนักงาน กรุณาตรวจสอบชื่อก่อนยืนยัน',
+      'success'
+    );
+
+
+  } catch (err) {
+
+    console.error(err);
+
+
+    registrationEmployee =
+      null;
+
+
+    document
+      .getElementById(
+        'registerConfirm'
+      )
+      .classList.add(
+        'hidden'
+      );
+
+
+    showRegistrationMessage(
+      err.message ||
+      String(err),
+      'error'
+    );
+
+
+  } finally {
+
+    document
+      .getElementById(
+        'checkEmployeeBtn'
+      )
+      .disabled =
+        false;
+
+  }
+
+}
+
+
+/* =================================================
+ * CONFIRM REGISTRATION
+ * ================================================= */
+
+async function confirmRegistration() {
+
+  clearRegistrationMessage();
+
+
+  if (!registrationEmployee) {
+
+    showRegistrationMessage(
+      'กรุณาตรวจสอบรหัสพนักงานก่อน',
+      'error'
+    );
+
+    return;
+
+  }
+
+
+  try {
+
+    setRegistrationButtonsDisabled(
+      true
+    );
+
+
+    showRegistrationMessage(
+      'กำลังบันทึก LINE ID...',
+      'info'
+    );
+
+
+    const result =
+      await callAPI(
+        'registerLink',
+        {
+          employeeId:
+            registrationEmployee.id
+        }
+      );
+
+
+    if (!result.success) {
+
+      throw new Error(
+        result.error ||
+        'ไม่สามารถลงทะเบียนได้'
+      );
+
+    }
+
+
+    employee =
+      result.employee;
+
+
+    showRegistrationMessage(
+      'ลงทะเบียน LINE สำเร็จ',
+      'success'
+    );
+
+
+    displayProfile({
+      employee:
+        employee
+    });
+
+
+    await loadStatus();
+
+
+    registrationEmployee =
+      null;
+
+
+    setTimeout(
+      function() {
+
+        hideRegistration();
+
+        showMainSystem();
+
+        clearRegistrationMessage();
+
+      },
+      800
+    );
+
+
+  } catch (err) {
+
+    console.error(err);
+
+
+    showRegistrationMessage(
+      err.message ||
+      String(err),
+      'error'
+    );
+
+
+  } finally {
+
+    setRegistrationButtonsDisabled(
+      false
+    );
+
+  }
+
+}
+
+
+/* =================================================
+ * CANCEL REGISTRATION
+ * ================================================= */
+
+function cancelRegistration() {
+
+  registrationEmployee =
+    null;
+
+
+  document
+    .getElementById(
+      'registerConfirm'
+    )
+    .classList.add(
+      'hidden'
+    );
+
+
+  clearRegistrationMessage();
+
+}
+
+
+/* =================================================
+ * REGISTRATION BUTTONS
+ * ================================================= */
+
+function setRegistrationButtonsDisabled(
+  disabled
+) {
+
+  document
+    .getElementById(
+      'checkEmployeeBtn'
+    )
+    .disabled =
+      disabled;
+
+}
+
+
+/* =================================================
+ * REGISTRATION MESSAGE
+ * ================================================= */
+
+function showRegistrationMessage(
+  message,
+  type
+) {
+
+  const el =
+    document
+      .getElementById(
+        'registrationMessage'
+      );
+
+
+  el.textContent =
+    message || '';
+
+
+  el.className =
+    'message ' +
+    (
+      type || ''
+    );
+
+}
+
+
+function clearRegistrationMessage() {
+
+  const el =
+    document
+      .getElementById(
+        'registrationMessage'
+      );
+
+
+  el.textContent =
+    '';
+
+
+  el.className =
+    'message';
+
+}
+
+
+/* =================================================
+ * LOAD STATUS
+ * ================================================= */
+
+async function loadStatus() {
 
   const result =
-    await callAPI('profile');
-
-
-  console.log(
-    'PROFILE RESULT',
-    result
-  );
+    await callAPI(
+      'status'
+    );
 
 
   if (!result.success) {
 
     throw new Error(
       result.error ||
-      'ไม่สามารถโหลดข้อมูลพนักงานได้'
+      'ไม่สามารถตรวจสอบสถานะได้'
     );
 
   }
 
 
-  if (
-    result.authorized !== true &&
-    !result.employee
-  ) {
-
-    throw new Error(
-      'LINE นี้ยังไม่ได้ผูกกับข้อมูลพนักงาน'
-    );
-
-  }
+  currentStatus =
+    result.status;
 
 
-  if (!result.employee) {
-
-    throw new Error(
-      'ไม่พบข้อมูลพนักงาน'
-    );
-
-  }
-
-
-  employee =
-    result.employee;
-
-
-  displayProfile(
-    result
+  displayStatus(
+    result.status
   );
 
 }
@@ -505,48 +1228,43 @@ function displayProfile(result) {
     result.employee;
 
 
-  const employeeId =
-    emp.id ||
-    emp.employeeId ||
-    '-';
-
-
   document
-    .getElementById('employeeId')
+    .getElementById(
+      'employeeId'
+    )
     .textContent =
-      employeeId;
+      emp.id ||
+      emp.employeeId ||
+      '-';
 
 
   document
-    .getElementById('employeeName')
+    .getElementById(
+      'employeeName'
+    )
     .textContent =
       emp.name ||
       '-';
 
 
   document
-    .getElementById('employeeDepartment')
+    .getElementById(
+      'employeeDepartment'
+    )
     .textContent =
       emp.department ||
       '-';
 
 
-  const shiftText =
-    emp.shiftName ||
-    emp.shift ||
-    '-';
-
-
   document
-    .getElementById('employeeShift')
+    .getElementById(
+      'employeeShift'
+    )
     .textContent =
-      shiftText;
+      emp.shiftName ||
+      emp.shift ||
+      '-';
 
-
-  /*
-   * แก้ปัญหา
-   * [object Object]
-   */
 
   const start =
     formatShiftTime(
@@ -561,7 +1279,9 @@ function displayProfile(result) {
 
 
   document
-    .getElementById('employeeShiftTime')
+    .getElementById(
+      'employeeShiftTime'
+    )
     .textContent =
       start && end
         ? start + ' - ' + end
@@ -572,8 +1292,6 @@ function displayProfile(result) {
 
 /* =================================================
  * FORMAT SHIFT TIME
- *
- * รองรับหลายรูปแบบ
  * ================================================= */
 
 function formatShiftTime(value) {
@@ -589,18 +1307,9 @@ function formatShiftTime(value) {
   }
 
 
-  /*
-   * กรณีเป็นข้อความ
-   * เช่น 08:00
-   */
-
   if (
     typeof value === 'string'
   ) {
-
-    /*
-     * ถ้ามีรูปแบบ HH:mm อยู่แล้ว
-     */
 
     const match =
       value.match(
@@ -628,17 +1337,9 @@ function formatShiftTime(value) {
   }
 
 
-  /*
-   * กรณีเป็น Object
-   */
-
   if (
     typeof value === 'object'
   ) {
-
-    /*
-     * hours / minutes
-     */
 
     if (
       value.hours !== undefined &&
@@ -653,10 +1354,6 @@ function formatShiftTime(value) {
     }
 
 
-    /*
-     * hour / minute
-     */
-
     if (
       value.hour !== undefined &&
       value.minute !== undefined
@@ -670,10 +1367,6 @@ function formatShiftTime(value) {
     }
 
 
-    /*
-     * h / m
-     */
-
     if (
       value.h !== undefined &&
       value.m !== undefined
@@ -686,27 +1379,6 @@ function formatShiftTime(value) {
 
     }
 
-
-    /*
-     * ถ้า Object มี toString
-     */
-
-    try {
-
-      const text =
-        String(value);
-
-
-      if (
-        text !== '[object Object]'
-      ) {
-
-        return text;
-
-      }
-
-    } catch (e) {}
-
   }
 
 
@@ -716,7 +1388,7 @@ function formatShiftTime(value) {
 
 
 /* =================================================
- * FORMAT HOUR + MINUTE
+ * FORMAT HOUR MINUTE
  * ================================================= */
 
 function formatHourMinute(
@@ -724,57 +1396,16 @@ function formatHourMinute(
   minute
 ) {
 
-  const h =
-    Number(hour) || 0;
-
-
-  const m =
-    Number(minute) || 0;
-
-
   return (
-    String(h).padStart(2, '0')
+    String(
+      Number(hour) || 0
+    ).padStart(2, '0')
     +
     ':'
     +
-    String(m).padStart(2, '0')
-  );
-
-}
-
-
-/* =================================================
- * LOAD STATUS
- * ================================================= */
-
-async function loadStatus() {
-
-  const result =
-    await callAPI('status');
-
-
-  console.log(
-    'STATUS RESULT',
-    result
-  );
-
-
-  if (!result.success) {
-
-    throw new Error(
-      result.error ||
-      'ไม่สามารถตรวจสอบสถานะได้'
-    );
-
-  }
-
-
-  currentStatus =
-    result.status;
-
-
-  displayStatus(
-    result.status
+    String(
+      Number(minute) || 0
+    ).padStart(2, '0')
   );
 
 }
@@ -897,10 +1528,6 @@ function displayStatus(status) {
   detail.innerHTML =
     html || '';
 
-
-  /*
-   * ควบคุมปุ่ม
-   */
 
   if (
     status.state ===
@@ -1174,9 +1801,6 @@ async function handleClockIn() {
 
   } catch (err) {
 
-    console.error(err);
-
-
     showMessage(
       err.message ||
       String(err),
@@ -1298,9 +1922,6 @@ async function handleClockOut() {
 
   } catch (err) {
 
-    console.error(err);
-
-
     showMessage(
       err.message ||
       String(err),
@@ -1371,11 +1992,13 @@ function getGPS() {
 
 
           resolve({
+
             latitude:
               latitude,
 
             longitude:
               longitude
+
           });
 
         },
@@ -1425,6 +2048,7 @@ function getGPS() {
 
 
         {
+
           enableHighAccuracy:
             true,
 
@@ -1433,6 +2057,7 @@ function getGPS() {
 
           maximumAge:
             0
+
         }
 
       );
