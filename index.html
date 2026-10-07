@@ -10,13 +10,9 @@
   content="width=device-width, initial-scale=1.0"
 >
 
-<title>
-KUIBURI TIME CLOCK
-</title>
-
+<title>KUIBURI TIME CLOCK</title>
 
 <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
-
 
 <style>
 
@@ -24,365 +20,161 @@ KUIBURI TIME CLOCK
   box-sizing: border-box;
 }
 
-
 body {
-
   margin: 0;
-
-  font-family:
-    Arial,
-    "Noto Sans Thai",
-    sans-serif;
-
-  background:
-    #f4f6f8;
-
-  color:
-    #222;
-
+  font-family: Arial, "Noto Sans Thai", sans-serif;
+  background: #f4f6f8;
+  color: #222;
 }
-
 
 .container {
-
-  max-width:
-    480px;
-
-  margin:
-    auto;
-
-  padding:
-    20px;
-
+  max-width: 480px;
+  margin: auto;
+  padding: 20px;
 }
-
 
 .card {
-
-  background:
-    white;
-
-  border-radius:
-    18px;
-
-  padding:
-    22px;
-
-  margin-bottom:
-    16px;
-
-  box-shadow:
-    0 4px 15px
-    rgba(0,0,0,0.08);
-
+  background: white;
+  border-radius: 18px;
+  padding: 22px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
 }
-
 
 .hotel {
-
-  text-align:
-    center;
-
-  font-size:
-    14px;
-
-  color:
-    #777;
-
-  margin-bottom:
-    5px;
-
+  text-align: center;
+  font-size: 14px;
+  color: #777;
+  margin-bottom: 5px;
 }
-
 
 .title {
-
-  text-align:
-    center;
-
-  font-size:
-    25px;
-
-  font-weight:
-    bold;
-
-  margin:
-    0 0 5px;
-
+  text-align: center;
+  font-size: 25px;
+  font-weight: bold;
+  margin: 0 0 5px;
 }
-
 
 .subtitle {
-
-  text-align:
-    center;
-
-  color:
-    #777;
-
-  font-size:
-    14px;
-
+  text-align: center;
+  color: #777;
+  font-size: 14px;
 }
-
 
 .profile {
-
-  display:
-    grid;
-
-  grid-template-columns:
-    90px 1fr;
-
-  gap:
-    8px;
-
-  font-size:
-    15px;
-
+  display: grid;
+  grid-template-columns: 90px 1fr;
+  gap: 8px;
+  font-size: 15px;
 }
-
 
 .label {
-
-  color:
-    #777;
-
+  color: #777;
 }
-
 
 .value {
-
-  font-weight:
-    bold;
-
+  font-weight: bold;
 }
-
 
 .status {
-
-  text-align:
-    center;
-
-  padding:
-    16px;
-
-  border-radius:
-    14px;
-
-  background:
-    #f1f3f5;
-
-  margin-top:
-    15px;
-
+  text-align: center;
+  padding: 16px;
+  border-radius: 14px;
+  background: #f1f3f5;
+  margin-top: 15px;
 }
-
 
 .status-title {
-
-  font-size:
-    20px;
-
-  font-weight:
-    bold;
-
+  font-size: 20px;
+  font-weight: bold;
 }
-
 
 .status-detail {
-
-  margin-top:
-    8px;
-
-  line-height:
-    1.8;
-
-  color:
-    #555;
-
+  margin-top: 8px;
+  line-height: 1.8;
+  color: #555;
 }
-
 
 button {
-
-  width:
-    100%;
-
-  border:
-    none;
-
-  border-radius:
-    14px;
-
-  padding:
-    17px;
-
-  font-size:
-    18px;
-
-  font-weight:
-    bold;
-
-  cursor:
-    pointer;
-
-  margin-top:
-    10px;
-
+  width: 100%;
+  border: none;
+  border-radius: 14px;
+  padding: 17px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
 }
-
 
 .btn-in {
-
-  background:
-    #198754;
-
-  color:
-    white;
-
+  background: #198754;
+  color: white;
 }
-
 
 .btn-out {
-
-  background:
-    #dc3545;
-
-  color:
-    white;
-
+  background: #dc3545;
+  color: white;
 }
-
 
 button:disabled {
-
-  opacity:
-    0.45;
-
-  cursor:
-    not-allowed;
-
+  opacity: 0.45;
+  cursor: not-allowed;
 }
-
 
 .message {
-
-  padding:
-    14px;
-
-  border-radius:
-    12px;
-
-  margin-top:
-    15px;
-
-  display:
-    none;
-
-  text-align:
-    center;
-
+  padding: 14px;
+  border-radius: 12px;
+  margin-top: 15px;
+  display: none;
+  text-align: center;
+  white-space: pre-line;
 }
-
 
 .message.success {
-
-  display:
-    block;
-
-  background:
-    #d1e7dd;
-
-  color:
-    #0f5132;
-
+  display: block;
+  background: #d1e7dd;
+  color: #0f5132;
 }
-
 
 .message.error {
-
-  display:
-    block;
-
-  background:
-    #f8d7da;
-
-  color:
-    #842029;
-
+  display: block;
+  background: #f8d7da;
+  color: #842029;
 }
-
 
 .loading {
-
-  position:
-    fixed;
-
-  inset:
-    0;
-
-  background:
-    rgba(255,255,255,0.95);
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  justify-content:
-    center;
-
-  z-index:
-    9999;
-
-  font-size:
-    18px;
-
+  position: fixed;
+  inset: 0;
+  background: rgba(255,255,255,0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  font-size: 18px;
 }
-
 
 .hidden {
-
-  display:
-    none !important;
-
+  display: none !important;
 }
-
 
 .gps {
-
-  font-size:
-    13px;
-
-  color:
-    #777;
-
-  margin-top:
-    10px;
-
-  text-align:
-    center;
-
+  font-size: 13px;
+  color: #777;
+  margin-top: 10px;
+  text-align: center;
 }
-
 
 </style>
 
 </head>
 
-
 <body>
-
 
 <div
   id="loading"
   class="loading"
 >
-
-กำลังเชื่อมต่อระบบ...
-
+  กำลังเชื่อมต่อระบบ...
 </div>
 
 
@@ -392,29 +184,20 @@ button:disabled {
   style="display:none;"
 >
 
-
   <!-- HEADER -->
 
   <div class="card">
 
     <div class="hotel">
-
       KUIBURI HOTEL & RESORT
-
     </div>
 
-
     <h1 class="title">
-
       KUIBURI TIME CLOCK
-
     </h1>
 
-
     <div class="subtitle">
-
       ระบบบันทึกเวลาเข้า - ออกงาน
-
     </div>
 
   </div>
@@ -547,7 +330,6 @@ button:disabled {
 
   </div>
 
-
 </div>
 
 
@@ -569,16 +351,11 @@ const API_URL =
  * GLOBAL
  * ================================================= */
 
-let lineUserId =
-  '';
+let lineUserId = '';
 
+let employee = null;
 
-let employee =
-  null;
-
-
-let currentStatus =
-  null;
+let currentStatus = null;
 
 
 /* =================================================
@@ -601,18 +378,11 @@ async function init() {
 
 
     await liff.init({
-      liffId:
-        LIFF_ID
+      liffId: LIFF_ID
     });
 
 
-    /*
-     * ถ้ายังไม่ได้ Login
-     */
-
-    if (
-      !liff.isLoggedIn()
-    ) {
+    if (!liff.isLoggedIn()) {
 
       liff.login();
 
@@ -620,10 +390,6 @@ async function init() {
 
     }
 
-
-    /*
-     * อ่าน LINE Profile
-     */
 
     const profile =
       await liff.getProfile();
@@ -644,16 +410,7 @@ async function init() {
     }
 
 
-    /*
-     * โหลดข้อมูลพนักงาน
-     */
-
     await loadProfile();
-
-
-    /*
-     * โหลดสถานะ
-     */
 
     await loadStatus();
 
@@ -662,19 +419,13 @@ async function init() {
 
 
     document
-      .getElementById(
-        'app'
-      )
-      .style.display =
-        'block';
+      .getElementById('app')
+      .style.display = 'block';
 
 
   } catch (err) {
 
-    console.error(
-      err
-    );
-
+    console.error(err);
 
     showFatalError(
       err.message ||
@@ -693,9 +444,7 @@ async function init() {
 async function loadProfile() {
 
   const result =
-    await callAPI(
-      'profile'
-    );
+    await callAPI('profile');
 
 
   console.log(
@@ -714,13 +463,6 @@ async function loadProfile() {
   }
 
 
-  /*
-   * จุดสำคัญ
-   *
-   * ตรวจ employee ด้วย
-   * เพื่อไม่ให้เกิดปัญหาเดิม
-   */
-
   if (
     result.authorized !== true &&
     !result.employee
@@ -733,9 +475,7 @@ async function loadProfile() {
   }
 
 
-  if (
-    !result.employee
-  ) {
+  if (!result.employee) {
 
     throw new Error(
       'ไม่พบข้อมูลพนักงาน'
@@ -759,19 +499,11 @@ async function loadProfile() {
  * DISPLAY PROFILE
  * ================================================= */
 
-function displayProfile(
-  result
-) {
+function displayProfile(result) {
 
   const emp =
     result.employee;
 
-
-  /*
-   * รองรับทั้ง
-   * id
-   * employeeId
-   */
 
   const employeeId =
     emp.id ||
@@ -780,26 +512,20 @@ function displayProfile(
 
 
   document
-    .getElementById(
-      'employeeId'
-    )
+    .getElementById('employeeId')
     .textContent =
       employeeId;
 
 
   document
-    .getElementById(
-      'employeeName'
-    )
+    .getElementById('employeeName')
     .textContent =
       emp.name ||
       '-';
 
 
   document
-    .getElementById(
-      'employeeDepartment'
-    )
+    .getElementById('employeeDepartment')
     .textContent =
       emp.department ||
       '-';
@@ -812,31 +538,207 @@ function displayProfile(
 
 
   document
-    .getElementById(
-      'employeeShift'
-    )
+    .getElementById('employeeShift')
     .textContent =
       shiftText;
 
 
+  /*
+   * แก้ปัญหา
+   * [object Object]
+   */
+
   const start =
-    emp.shiftStart ||
-    '';
+    formatShiftTime(
+      emp.shiftStart
+    );
 
 
   const end =
-    emp.shiftEnd ||
-    '';
+    formatShiftTime(
+      emp.shiftEnd
+    );
 
 
   document
-    .getElementById(
-      'employeeShiftTime'
-    )
+    .getElementById('employeeShiftTime')
     .textContent =
       start && end
         ? start + ' - ' + end
         : '-';
+
+}
+
+
+/* =================================================
+ * FORMAT SHIFT TIME
+ *
+ * รองรับหลายรูปแบบ
+ * ================================================= */
+
+function formatShiftTime(value) {
+
+  if (
+    value === null ||
+    value === undefined ||
+    value === ''
+  ) {
+
+    return '';
+
+  }
+
+
+  /*
+   * กรณีเป็นข้อความ
+   * เช่น 08:00
+   */
+
+  if (
+    typeof value === 'string'
+  ) {
+
+    /*
+     * ถ้ามีรูปแบบ HH:mm อยู่แล้ว
+     */
+
+    const match =
+      value.match(
+        /(\d{1,2}):(\d{2})/
+      );
+
+
+    if (match) {
+
+      return (
+        String(
+          Number(match[1])
+        ).padStart(2, '0')
+        +
+        ':'
+        +
+        match[2]
+      );
+
+    }
+
+
+    return value;
+
+  }
+
+
+  /*
+   * กรณีเป็น Object
+   */
+
+  if (
+    typeof value === 'object'
+  ) {
+
+    /*
+     * hours / minutes
+     */
+
+    if (
+      value.hours !== undefined &&
+      value.minutes !== undefined
+    ) {
+
+      return formatHourMinute(
+        value.hours,
+        value.minutes
+      );
+
+    }
+
+
+    /*
+     * hour / minute
+     */
+
+    if (
+      value.hour !== undefined &&
+      value.minute !== undefined
+    ) {
+
+      return formatHourMinute(
+        value.hour,
+        value.minute
+      );
+
+    }
+
+
+    /*
+     * h / m
+     */
+
+    if (
+      value.h !== undefined &&
+      value.m !== undefined
+    ) {
+
+      return formatHourMinute(
+        value.h,
+        value.m
+      );
+
+    }
+
+
+    /*
+     * ถ้า Object มี toString
+     */
+
+    try {
+
+      const text =
+        String(value);
+
+
+      if (
+        text !== '[object Object]'
+      ) {
+
+        return text;
+
+      }
+
+    } catch (e) {}
+
+  }
+
+
+  return '';
+
+}
+
+
+/* =================================================
+ * FORMAT HOUR + MINUTE
+ * ================================================= */
+
+function formatHourMinute(
+  hour,
+  minute
+) {
+
+  const h =
+    Number(hour) || 0;
+
+
+  const m =
+    Number(minute) || 0;
+
+
+  return (
+    String(h).padStart(2, '0')
+    +
+    ':'
+    +
+    String(m).padStart(2, '0')
+  );
 
 }
 
@@ -848,9 +750,7 @@ function displayProfile(
 async function loadStatus() {
 
   const result =
-    await callAPI(
-      'status'
-    );
+    await callAPI('status');
 
 
   console.log(
@@ -884,9 +784,7 @@ async function loadStatus() {
  * DISPLAY STATUS
  * ================================================= */
 
-function displayStatus(
-  status
-) {
+function displayStatus(status) {
 
   if (!status) {
     return;
@@ -922,13 +820,10 @@ function displayStatus(
     '-';
 
 
-  let html =
-    '';
+  let html = '';
 
 
-  if (
-    status.checkIn
-  ) {
+  if (status.checkIn) {
 
     html +=
       'เวลาเข้า: ' +
@@ -938,9 +833,7 @@ function displayStatus(
   }
 
 
-  if (
-    status.checkOut
-  ) {
+  if (status.checkOut) {
 
     html +=
       'เวลาออก: ' +
@@ -966,9 +859,7 @@ function displayStatus(
   }
 
 
-  if (
-    status.workTime
-  ) {
+  if (status.workTime) {
 
     html +=
       'เวลาทำงาน: ' +
@@ -994,9 +885,7 @@ function displayStatus(
   }
 
 
-  if (
-    status.otStatus
-  ) {
+  if (status.otStatus) {
 
     html +=
       'สถานะ OT: ' +
@@ -1006,12 +895,11 @@ function displayStatus(
 
 
   detail.innerHTML =
-    html ||
-    '';
+    html || '';
 
 
   /*
-   * ปุ่ม
+   * ควบคุมปุ่ม
    */
 
   if (
@@ -1065,8 +953,6 @@ function displayStatus(
 
 /* =================================================
  * API CALL
- *
- * ใช้ JSONP
  * ================================================= */
 
 function callAPI(
@@ -1156,9 +1042,7 @@ function callAPI(
 
           cleanup();
 
-          resolve(
-            data
-          );
+          resolve(data);
 
         };
 
@@ -1236,9 +1120,7 @@ async function handleClockIn() {
 
   try {
 
-    setButtonsDisabled(
-      true
-    );
+    setButtonsDisabled(true);
 
 
     showMessage(
@@ -1261,13 +1143,11 @@ async function handleClockIn() {
       await callAPI(
         'clockIn',
         {
-
           latitude:
             position.latitude,
 
           longitude:
             position.longitude
-
         }
       );
 
@@ -1294,9 +1174,7 @@ async function handleClockIn() {
 
   } catch (err) {
 
-    console.error(
-      err
-    );
+    console.error(err);
 
 
     showMessage(
@@ -1308,15 +1186,8 @@ async function handleClockIn() {
 
   } finally {
 
-    setButtonsDisabled(
-      false
-    );
+    setButtonsDisabled(false);
 
-
-    /*
-     * ให้สถานะจาก server
-     * เป็นตัวควบคุมปุ่ม
-     */
 
     if (currentStatus) {
 
@@ -1342,9 +1213,7 @@ async function handleClockOut() {
 
   try {
 
-    setButtonsDisabled(
-      true
-    );
+    setButtonsDisabled(true);
 
 
     showMessage(
@@ -1367,13 +1236,11 @@ async function handleClockOut() {
       await callAPI(
         'clockOut',
         {
-
           latitude:
             position.latitude,
 
           longitude:
             position.longitude
-
         }
       );
 
@@ -1431,9 +1298,7 @@ async function handleClockOut() {
 
   } catch (err) {
 
-    console.error(
-      err
-    );
+    console.error(err);
 
 
     showMessage(
@@ -1445,9 +1310,7 @@ async function handleClockOut() {
 
   } finally {
 
-    setButtonsDisabled(
-      false
-    );
+    setButtonsDisabled(false);
 
 
     if (currentStatus) {
@@ -1508,13 +1371,11 @@ function getGPS() {
 
 
           resolve({
-
             latitude:
               latitude,
 
             longitude:
               longitude
-
           });
 
         },
@@ -1527,8 +1388,7 @@ function getGPS() {
 
 
           if (
-            error.code ===
-            1
+            error.code === 1
           ) {
 
             message =
@@ -1538,8 +1398,7 @@ function getGPS() {
 
 
           if (
-            error.code ===
-            2
+            error.code === 2
           ) {
 
             message =
@@ -1549,8 +1408,7 @@ function getGPS() {
 
 
           if (
-            error.code ===
-            3
+            error.code === 3
           ) {
 
             message =
@@ -1560,16 +1418,13 @@ function getGPS() {
 
 
           reject(
-            new Error(
-              message
-            )
+            new Error(message)
           );
 
         },
 
 
         {
-
           enableHighAccuracy:
             true,
 
@@ -1578,7 +1433,6 @@ function getGPS() {
 
           maximumAge:
             0
-
         }
 
       );
@@ -1637,8 +1491,7 @@ function showMessage(
   el.className =
     'message ' +
     (
-      type ||
-      ''
+      type || ''
     );
 
 }
@@ -1666,9 +1519,7 @@ function clearMessage() {
  * LOADING
  * ================================================= */
 
-function showLoading(
-  text
-) {
+function showLoading(text) {
 
   const el =
     document.getElementById(
@@ -1705,9 +1556,7 @@ function hideLoading() {
  * FATAL ERROR
  * ================================================= */
 
-function showFatalError(
-  message
-) {
+function showFatalError(message) {
 
   hideLoading();
 
@@ -1738,9 +1587,7 @@ function showFatalError(
         'style="display:block;">' +
 
         '❌ ' +
-        escapeHTML(
-          message
-        ) +
+        escapeHTML(message) +
 
       '</div>' +
 
@@ -1753,9 +1600,7 @@ function showFatalError(
  * ESCAPE HTML
  * ================================================= */
 
-function escapeHTML(
-  value
-) {
+function escapeHTML(value) {
 
   return String(
     value || ''
