@@ -840,14 +840,13 @@ async function checkRegistration() {
 
 
     const result =
-      await callAPI(
-        'registerCheck',
-        {
-          employeeId:
-            employeeId
-        }
-      );
-
+  await callAPI(
+    'registerCheck',
+    {
+      employeeId: employeeId,
+      lineUserId: lineUserId
+    }
+  );
 
     if (!result.success) {
 
