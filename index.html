@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="th">
 
 <head>
@@ -6,8 +7,9 @@
 <meta charset="UTF-8">
 
 <meta
-  name="viewport"
-  content="width=device-width, initial-scale=1.0"
+name="viewport"
+content="width=device-width, initial-scale=1.0"
+
 >
 
 <title>KUIBURI TIME CLOCK</title>
@@ -243,7 +245,6 @@ button:disabled {
   กำลังเชื่อมต่อระบบ...
 </div>
 
-
 <div
   class="container"
   id="app"
@@ -254,20 +255,21 @@ button:disabled {
 
   <div class="card">
 
-    <div class="hotel">
-      KUIBURI HOTEL & RESORT
-    </div>
+```
+<div class="hotel">
+  KUIBURI HOTEL & RESORT
+</div>
 
-    <h1 class="title">
-      KUIBURI TIME CLOCK
-    </h1>
+<h1 class="title">
+  KUIBURI TIME CLOCK
+</h1>
 
-    <div class="subtitle">
-      ระบบบันทึกเวลาเข้า - ออกงาน
-    </div>
+<div class="subtitle">
+  ระบบบันทึกเวลาเข้า - ออกงาน
+</div>
+```
 
   </div>
-
 
   <!-- REGISTRATION -->
 
@@ -276,270 +278,275 @@ button:disabled {
     class="card hidden"
   >
 
-    <div class="register-title">
-      🔗 ลงทะเบียนพนักงาน
+```
+<div class="register-title">
+  🔗 ลงทะเบียนพนักงาน
+</div>
+
+<div class="register-note">
+  LINE นี้ยังไม่ได้ผูกกับข้อมูลพนักงาน<br>
+  กรุณากรอกรหัสพนักงานของท่าน
+</div>
+
+<input
+  id="registerEmployeeId"
+  type="text"
+  placeholder="กรอกรหัสพนักงาน"
+  autocomplete="off"
+>
+
+<button
+  id="checkEmployeeBtn"
+  class="btn-register"
+  onclick="checkRegistration()"
+>
+  ตรวจสอบรหัสพนักงาน
+</button>
+
+
+<div
+  id="registerConfirm"
+  class="confirm-box hidden"
+>
+
+  <div class="confirm-row">
+
+    <div class="confirm-label">
+      รหัสพนักงาน
     </div>
-
-    <div class="register-note">
-      LINE นี้ยังไม่ได้ผูกกับข้อมูลพนักงาน<br>
-      กรุณากรอกรหัสพนักงานของท่าน
-    </div>
-
-    <input
-      id="registerEmployeeId"
-      type="text"
-     placeholder="กรอกรหัสพนักงาน"
-      autocomplete="off"
-    >
-
-    <button
-      id="checkEmployeeBtn"
-      class="btn-register"
-      onclick="checkRegistration()"
-    >
-      ตรวจสอบรหัสพนักงาน
-    </button>
-
 
     <div
-      id="registerConfirm"
-      class="confirm-box hidden"
+      class="confirm-value"
+      id="confirmEmployeeId"
     >
-
-      <div class="confirm-row">
-
-        <div class="confirm-label">
-          รหัสพนักงาน
-        </div>
-
-        <div
-          class="confirm-value"
-          id="confirmEmployeeId"
-        >
-          -
-        </div>
-
-      </div>
-
-
-      <div class="confirm-row">
-
-        <div class="confirm-label">
-          ชื่อ
-        </div>
-
-        <div
-          class="confirm-value"
-          id="confirmEmployeeName"
-        >
-          -
-        </div>
-
-      </div>
-
-
-      <div class="confirm-row">
-
-        <div class="confirm-label">
-          แผนก
-        </div>
-
-        <div
-          class="confirm-value"
-          id="confirmEmployeeDepartment"
-        >
-          -
-        </div>
-
-      </div>
-
-
-      <div class="confirm-row">
-
-        <div class="confirm-label">
-          กะ
-        </div>
-
-        <div
-          class="confirm-value"
-          id="confirmEmployeeShift"
-        >
-          -
-        </div>
-
-      </div>
-
-
-      <div
-        class="register-note"
-        style="margin-top:12px;"
-      >
-        กรุณาตรวจสอบว่าชื่อเป็นของท่าน
-        ก่อนกดยืนยัน
-      </div>
-
-
-      <button
-        class="btn-confirm"
-        onclick="confirmRegistration()"
-      >
-        ✅ ยืนยันการลงทะเบียน
-      </button>
-
-
-      <button
-        class="btn-cancel"
-        onclick="cancelRegistration()"
-      >
-        ยกเลิก
-      </button>
-
+      -
     </div>
-
-
-    <div
-      id="registrationMessage"
-      class="message"
-    ></div>
 
   </div>
 
+
+  <div class="confirm-row">
+
+    <div class="confirm-label">
+      ชื่อ
+    </div>
+
+    <div
+      class="confirm-value"
+      id="confirmEmployeeName"
+    >
+      -
+    </div>
+
+  </div>
+
+
+  <div class="confirm-row">
+
+    <div class="confirm-label">
+      แผนก
+    </div>
+
+    <div
+      class="confirm-value"
+      id="confirmEmployeeDepartment"
+    >
+      -
+    </div>
+
+  </div>
+
+
+  <div class="confirm-row">
+
+    <div class="confirm-label">
+      กะ
+    </div>
+
+    <div
+      class="confirm-value"
+      id="confirmEmployeeShift"
+    >
+      -
+    </div>
+
+  </div>
+
+
+  <div
+    class="register-note"
+    style="margin-top:12px;"
+  >
+    กรุณาตรวจสอบว่าชื่อเป็นของท่าน
+    ก่อนกดยืนยัน
+  </div>
+
+
+  <button
+    id="confirmRegisterBtn"
+    class="btn-confirm"
+    onclick="confirmRegistration()"
+  >
+    ✅ ยืนยันการลงทะเบียน
+  </button>
+
+
+  <button
+    id="cancelRegisterBtn"
+    class="btn-cancel"
+    onclick="cancelRegistration()"
+  >
+    ยกเลิก
+  </button>
+
+</div>
+
+
+<div
+  id="registrationMessage"
+  class="message"
+></div>
+```
+
+  </div>
 
   <!-- PROFILE -->
 
   <div
     id="profileCard"
-    class="card"
+    class="card hidden"
   >
 
-    <div class="profile">
+```
+<div class="profile">
 
-      <div class="label">
-        รหัสพนักงาน
-      </div>
-
-      <div
-        class="value"
-        id="employeeId"
-      >
-        -
-      </div>
-
-
-      <div class="label">
-        ชื่อ
-      </div>
-
-      <div
-        class="value"
-        id="employeeName"
-      >
-        -
-      </div>
-
-
-      <div class="label">
-        แผนก
-      </div>
-
-      <div
-        class="value"
-        id="employeeDepartment"
-      >
-        -
-      </div>
-
-
-      <div class="label">
-        กะ
-      </div>
-
-      <div
-        class="value"
-        id="employeeShift"
-      >
-        -
-      </div>
-
-
-      <div class="label">
-        เวลา
-      </div>
-
-      <div
-        class="value"
-        id="employeeShiftTime"
-      >
-        -
-      </div>
-
-    </div>
-
+  <div class="label">
+    รหัสพนักงาน
   </div>
 
+  <div
+    class="value"
+    id="employeeId"
+  >
+    -
+  </div>
+
+
+  <div class="label">
+    ชื่อ
+  </div>
+
+  <div
+    class="value"
+    id="employeeName"
+  >
+    -
+  </div>
+
+
+  <div class="label">
+    แผนก
+  </div>
+
+  <div
+    class="value"
+    id="employeeDepartment"
+  >
+    -
+  </div>
+
+
+  <div class="label">
+    กะ
+  </div>
+
+  <div
+    class="value"
+    id="employeeShift"
+  >
+    -
+  </div>
+
+
+  <div class="label">
+    เวลา
+  </div>
+
+  <div
+    class="value"
+    id="employeeShiftTime"
+  >
+    -
+  </div>
+
+</div>
+```
+
+  </div>
 
   <!-- STATUS -->
 
   <div
     id="statusCard"
-    class="card"
+    class="card hidden"
   >
 
-    <div class="status">
+```
+<div class="status">
 
-      <div
-        class="status-title"
-        id="statusTitle"
-      >
-        กำลังตรวจสอบ...
-      </div>
-
-
-      <div
-        class="status-detail"
-        id="statusDetail"
-      >
-        -
-      </div>
-
-    </div>
+  <div
+    class="status-title"
+    id="statusTitle"
+  >
+    กำลังตรวจสอบ...
+  </div>
 
 
-    <div
-      id="gpsStatus"
-      class="gps"
-    >
-      ระบบจะขอตำแหน่ง GPS เมื่อกดเข้างานหรือออกงาน
-    </div>
-
-
-    <button
-      id="clockInBtn"
-      class="btn-in"
-      onclick="handleClockIn()"
-    >
-      🟢 เข้างาน
-    </button>
-
-
-    <button
-      id="clockOutBtn"
-      class="btn-out"
-      onclick="handleClockOut()"
-    >
-      🔴 ออกงาน
-    </button>
-
-
-    <div
-      id="message"
-      class="message"
-    ></div>
-
+  <div
+    class="status-detail"
+    id="statusDetail"
+  >
+    -
   </div>
 
 </div>
 
+
+<div
+  id="gpsStatus"
+  class="gps"
+>
+  ระบบจะขอตำแหน่ง GPS เมื่อกดเข้างานหรือออกงาน
+</div>
+
+
+<button
+  id="clockInBtn"
+  class="btn-in"
+  onclick="handleClockIn()"
+>
+  🟢 เข้างาน
+</button>
+
+
+<button
+  id="clockOutBtn"
+  class="btn-out"
+  onclick="handleClockOut()"
+>
+  🔴 ออกงาน
+</button>
+
+
+<div
+  id="message"
+  class="message"
+></div>
+```
+
+  </div>
+
+</div>
 
 <script>
 
@@ -549,7 +556,6 @@ button:disabled {
 
 const LIFF_ID =
   '2011898137-tsjk9yOf';
-
 
 const API_URL =
   'https://script.google.com/macros/s/AKfycbzlrkbwA4YsXhCOTwuqHneIVeGIYjbthK7qpsAvMsKfXAkEytP28hh0WE04wqf25_ZI/exec';
@@ -611,6 +617,12 @@ async function init() {
       ).trim();
 
 
+    console.log(
+      'LINE USER ID =',
+      lineUserId
+    );
+
+
     if (!lineUserId) {
 
       throw new Error(
@@ -620,20 +632,20 @@ async function init() {
     }
 
 
-    /*
-     * ลองโหลด profile
-     *
-     * ถ้าไม่พบ ให้ไปลงทะเบียน
-     */
-
     const profileResult =
       await callAPI(
         'profile'
       );
 
 
+    console.log(
+      'PROFILE RESULT =',
+      profileResult
+    );
+
+
     if (
-      profileResult.success &&
+      isApiOK(profileResult) &&
       profileResult.employee
     ) {
 
@@ -672,7 +684,10 @@ async function init() {
 
   } catch (err) {
 
-    console.error(err);
+    console.error(
+      'INIT ERROR:',
+      err
+    );
 
     showFatalError(
       err.message ||
@@ -680,6 +695,23 @@ async function init() {
     );
 
   }
+
+}
+
+
+/* =================================================
+ * API RESULT
+ * ================================================= */
+
+function isApiOK(result) {
+
+  return !!(
+    result &&
+    (
+      result.ok === true ||
+      result.success === true
+    )
+  );
 
 }
 
@@ -760,13 +792,6 @@ function showRegistration() {
       '';
 
 
-  document
-    .getElementById(
-      'registerEmployeeId'
-    )
-    .focus();
-
-
   clearRegistrationMessage();
 
 }
@@ -820,14 +845,26 @@ async function checkRegistration() {
   }
 
 
+  if (!lineUserId) {
+
+    showRegistrationMessage(
+      'ไม่พบ LINE User ID กรุณาปิดหน้าแล้วเปิดระบบใหม่จาก LINE',
+      'error'
+    );
+
+    return;
+
+  }
+
+
+  const button =
+    document
+      .getElementById(
+        'checkEmployeeBtn'
+      );
+
+
   try {
-
-    const button =
-      document
-        .getElementById(
-          'checkEmployeeBtn'
-        );
-
 
     button.disabled =
       true;
@@ -839,67 +876,65 @@ async function checkRegistration() {
     );
 
 
-    console.log('LINE USER ID =', lineUserId);
-console.log('EMPLOYEE ID =', employeeId);
+    console.log(
+      'REGISTER CHECK LINE USER ID =',
+      lineUserId
+    );
 
-const result =
-  await callAPI(
-    'registerCheck',
-    {
-      employeeId: employeeId,
-      lineUserId: lineUserId
-    }
-  );
+    console.log(
+      'REGISTER CHECK EMPLOYEE ID =',
+      employeeId
+    );
 
-    if (!result.success) {
+
+    const result =
+      await callAPI(
+        'registerCheck',
+        {
+          employeeId:
+            employeeId,
+
+          lineUserId:
+            lineUserId
+        }
+      );
+
+
+    console.log(
+      'REGISTER CHECK RESULT =',
+      result
+    );
+
+
+    if (!isApiOK(result)) {
 
       throw new Error(
-        result.error ||
-        'ไม่สามารถตรวจสอบรหัสพนักงานได้'
+        result &&
+        result.error
+          ? result.error
+          : 'ไม่สามารถตรวจสอบรหัสพนักงานได้'
       );
 
     }
 
 
-    if (
-      result.alreadyLinked
-    ) {
+    if (!result.employee) {
 
-      employee =
-        result.employee;
-
-
-      displayProfile({
-        employee:
-          result.employee
-      });
-
-
-      await loadStatus();
-
-
-      hideRegistration();
-
-      showMainSystem();
-
-      return;
+      throw new Error(
+        'ไม่พบข้อมูลพนักงาน'
+      );
 
     }
 
 
-   registrationEmployee =
-  result.employee;
+    registrationEmployee =
+      result.employee;
 
-if (
-  registrationEmployee &&
-  !registrationEmployee.id
-) {
 
-  registrationEmployee.id =
-    registrationEmployee.employeeId ||
-    '';
-
-}
+    const confirmedEmployeeId =
+      result.employee.employeeId ||
+      result.employee.id ||
+      employeeId;
 
 
     document
@@ -907,16 +942,7 @@ if (
         'confirmEmployeeId'
       )
       .textContent =
-        const result =
-  await callAPI(
-    'registerLink',
-    {
-      employeeId:
-        registrationEmployee.employeeId ||
-        registrationEmployee.id ||
-        ''
-    }
-  );
+        confirmedEmployeeId;
 
 
     document
@@ -924,9 +950,8 @@ if (
         'confirmEmployeeName'
       )
       .textContent =
-
-      
-        result.employee.name || '-';
+        result.employee.name ||
+        '-';
 
 
     document
@@ -934,13 +959,8 @@ if (
         'confirmEmployeeDepartment'
       )
       .textContent =
-        result.employee.department || '-';
-
-
-    const shiftText =
-      result.employee.shiftName ||
-      result.employee.shift ||
-      '-';
+        result.employee.department ||
+        '-';
 
 
     document
@@ -948,7 +968,9 @@ if (
         'confirmEmployeeShift'
       )
       .textContent =
-        shiftText;
+        result.employee.shiftName ||
+        result.employee.shift ||
+        '-';
 
 
     document
@@ -968,7 +990,10 @@ if (
 
   } catch (err) {
 
-    console.error(err);
+    console.error(
+      'REGISTER CHECK ERROR:',
+      err
+    );
 
 
     registrationEmployee =
@@ -986,19 +1011,15 @@ if (
 
     showRegistrationMessage(
       err.message ||
-      String(err),
+      'ไม่สามารถตรวจสอบรหัสพนักงานได้',
       'error'
     );
 
 
   } finally {
 
-    document
-      .getElementById(
-        'checkEmployeeBtn'
-      )
-      .disabled =
-        false;
+    button.disabled =
+      false;
 
   }
 
@@ -1026,6 +1047,18 @@ async function confirmRegistration() {
   }
 
 
+  if (!lineUserId) {
+
+    showRegistrationMessage(
+      'ไม่พบ LINE User ID กรุณาเปิดระบบจาก LINE ใหม่',
+      'error'
+    );
+
+    return;
+
+  }
+
+
   try {
 
     setRegistrationButtonsDisabled(
@@ -1039,28 +1072,55 @@ async function confirmRegistration() {
     );
 
 
+    const employeeId =
+      registrationEmployee.employeeId ||
+      registrationEmployee.id ||
+      '';
+
+
+    if (!employeeId) {
+
+      throw new Error(
+        'ไม่พบรหัสพนักงานสำหรับลงทะเบียน'
+      );
+
+    }
+
+
     const result =
       await callAPI(
         'registerLink',
         {
           employeeId:
-            registrationEmployee.id
+            employeeId,
+
+          lineUserId:
+            lineUserId
         }
       );
 
 
-    if (!result.success) {
+    console.log(
+      'REGISTER LINK RESULT =',
+      result
+    );
+
+
+    if (!isApiOK(result)) {
 
       throw new Error(
-        result.error ||
-        'ไม่สามารถลงทะเบียนได้'
+        result &&
+        result.error
+          ? result.error
+          : 'ไม่สามารถลงทะเบียนได้'
       );
 
     }
 
 
     employee =
-      result.employee;
+      result.employee ||
+      registrationEmployee;
 
 
     showRegistrationMessage(
@@ -1098,12 +1158,15 @@ async function confirmRegistration() {
 
   } catch (err) {
 
-    console.error(err);
+    console.error(
+      'REGISTER LINK ERROR:',
+      err
+    );
 
 
     showRegistrationMessage(
       err.message ||
-      String(err),
+      'ไม่สามารถลงทะเบียนได้',
       'error'
     );
 
@@ -1154,6 +1217,22 @@ function setRegistrationButtonsDisabled(
   document
     .getElementById(
       'checkEmployeeBtn'
+    )
+    .disabled =
+      disabled;
+
+
+  document
+    .getElementById(
+      'confirmRegisterBtn'
+    )
+    .disabled =
+      disabled;
+
+
+  document
+    .getElementById(
+      'cancelRegisterBtn'
     )
     .disabled =
       disabled;
@@ -1221,11 +1300,19 @@ async function loadStatus() {
     );
 
 
-  if (!result.success) {
+  console.log(
+    'STATUS RESULT =',
+    result
+  );
+
+
+  if (!isApiOK(result)) {
 
     throw new Error(
-      result.error ||
-      'ไม่สามารถตรวจสอบสถานะได้'
+      result &&
+      result.error
+        ? result.error
+        : 'ไม่สามารถตรวจสอบสถานะได้'
     );
 
   }
@@ -1252,13 +1339,18 @@ function displayProfile(result) {
     result.employee;
 
 
+  if (!emp) {
+    return;
+  }
+
+
   document
     .getElementById(
       'employeeId'
     )
     .textContent =
-      emp.id ||
       emp.employeeId ||
+      emp.id ||
       '-';
 
 
@@ -1622,33 +1714,40 @@ function callAPI(
           Math.random() * 100000
         );
 
+
       const params =
         new URLSearchParams();
+
 
       params.set(
         'api',
         '1'
       );
 
+
       params.set(
         'action',
         action
       );
+
 
       const currentLineUserId =
         extraParams.lineUserId ||
         lineUserId ||
         '';
 
+
       params.set(
         'userId',
         currentLineUserId
       );
 
+
       params.set(
         'callback',
         callbackName
       );
+
 
       Object.keys(
         extraParams
@@ -1662,7 +1761,9 @@ function callAPI(
 
             params.set(
               key,
-              extraParams[key]
+              String(
+                extraParams[key]
+              )
             );
 
           }
@@ -1670,12 +1771,16 @@ function callAPI(
         }
       );
 
+
       const script =
         document.createElement(
           'script'
         );
 
-      let finished = false;
+
+      let finished =
+        false;
+
 
       const timeout =
         setTimeout(
@@ -1685,9 +1790,13 @@ function callAPI(
               return;
             }
 
-            finished = true;
+
+            finished =
+              true;
+
 
             cleanup();
+
 
             reject(
               new Error(
@@ -1699,6 +1808,7 @@ function callAPI(
           20000
         );
 
+
       window[callbackName] =
         function(data) {
 
@@ -1706,35 +1816,26 @@ function callAPI(
             return;
           }
 
-          finished = true;
+
+          finished =
+            true;
+
 
           cleanup();
 
-          /*
-           * Backend ใช้ ok
-           * Frontend เดิมใช้ success
-           *
-           * แปลงให้รองรับทั้งสองแบบ
-           */
-          if (
-            data &&
-            data.success === undefined &&
-            data.ok !== undefined
-          ) {
 
-            data.success =
-              data.ok;
-
-          }
-
-          resolve(data);
+          resolve(
+            data
+          );
 
         };
+
 
       script.src =
         API_URL +
         '?' +
         params.toString();
+
 
       script.onerror =
         function() {
@@ -1743,9 +1844,13 @@ function callAPI(
             return;
           }
 
-          finished = true;
+
+          finished =
+            true;
+
 
           cleanup();
+
 
           reject(
             new Error(
@@ -1754,6 +1859,7 @@ function callAPI(
           );
 
         };
+
 
       document
         .body
@@ -1768,6 +1874,7 @@ function callAPI(
           timeout
         );
 
+
         if (
           script.parentNode
         ) {
@@ -1778,6 +1885,7 @@ function callAPI(
             );
 
         }
+
 
         try {
 
@@ -1794,6 +1902,7 @@ function callAPI(
 
 }
 
+
 /* =================================================
  * CLOCK IN
  * ================================================= */
@@ -1805,7 +1914,9 @@ async function handleClockIn() {
 
   try {
 
-    setButtonsDisabled(true);
+    setButtonsDisabled(
+      true
+    );
 
 
     showMessage(
@@ -1837,11 +1948,13 @@ async function handleClockIn() {
       );
 
 
-    if (!result.success) {
+    if (!isApiOK(result)) {
 
       throw new Error(
-        result.error ||
-        'ไม่สามารถบันทึกเวลาเข้างานได้'
+        result &&
+        result.error
+          ? result.error
+          : 'ไม่สามารถบันทึกเวลาเข้างานได้'
       );
 
     }
@@ -1859,6 +1972,12 @@ async function handleClockIn() {
 
   } catch (err) {
 
+    console.error(
+      'CLOCK IN ERROR:',
+      err
+    );
+
+
     showMessage(
       err.message ||
       String(err),
@@ -1868,7 +1987,9 @@ async function handleClockIn() {
 
   } finally {
 
-    setButtonsDisabled(false);
+    setButtonsDisabled(
+      false
+    );
 
 
     if (currentStatus) {
@@ -1895,7 +2016,9 @@ async function handleClockOut() {
 
   try {
 
-    setButtonsDisabled(true);
+    setButtonsDisabled(
+      true
+    );
 
 
     showMessage(
@@ -1927,11 +2050,13 @@ async function handleClockOut() {
       );
 
 
-    if (!result.success) {
+    if (!isApiOK(result)) {
 
       throw new Error(
-        result.error ||
-        'ไม่สามารถบันทึกเวลาออกงานได้'
+        result &&
+        result.error
+          ? result.error
+          : 'ไม่สามารถบันทึกเวลาออกงานได้'
       );
 
     }
@@ -1980,6 +2105,12 @@ async function handleClockOut() {
 
   } catch (err) {
 
+    console.error(
+      'CLOCK OUT ERROR:',
+      err
+    );
+
+
     showMessage(
       err.message ||
       String(err),
@@ -1989,7 +2120,9 @@ async function handleClockOut() {
 
   } finally {
 
-    setButtonsDisabled(false);
+    setButtonsDisabled(
+      false
+    );
 
 
     if (currentStatus) {
@@ -2099,7 +2232,9 @@ function getGPS() {
 
 
           reject(
-            new Error(message)
+            new Error(
+              message
+            )
           );
 
         },
