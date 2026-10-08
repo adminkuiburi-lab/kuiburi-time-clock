@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="th">
 
 <head>
@@ -7,9 +6,8 @@
 <meta charset="UTF-8">
 
 <meta
-name="viewport"
-content="width=device-width, initial-scale=1.0"
-
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
 >
 
 <title>KUIBURI TIME CLOCK</title>
@@ -184,6 +182,8 @@ button:disabled {
   justify-content: center;
   z-index: 9999;
   font-size: 18px;
+  text-align: center;
+  padding: 20px;
 }
 
 .hidden {
@@ -236,14 +236,25 @@ button:disabled {
 
 </head>
 
+
 <body>
+
+
+<!-- ==============================================
+     LOADING
+================================================ -->
 
 <div
   id="loading"
   class="loading"
 >
-  กำลังเชื่อมต่อระบบ...
+  กำลังเชื่อมต่อ LINE...
 </div>
+
+
+<!-- ==============================================
+     APP
+================================================ -->
 
 <div
   class="container"
@@ -251,304 +262,314 @@ button:disabled {
   style="display:none;"
 >
 
-  <!-- HEADER -->
+
+  <!-- ============================================
+       HEADER
+  ============================================= -->
 
   <div class="card">
 
-```
-<div class="hotel">
-  KUIBURI HOTEL & RESORT
-</div>
+    <div class="hotel">
+      KUIBURI HOTEL & RESORT
+    </div>
 
-<h1 class="title">
-  KUIBURI TIME CLOCK
-</h1>
+    <h1 class="title">
+      KUIBURI TIME CLOCK
+    </h1>
 
-<div class="subtitle">
-  ระบบบันทึกเวลาเข้า - ออกงาน
-</div>
-```
+    <div class="subtitle">
+      ระบบบันทึกเวลาเข้า - ออกงาน
+    </div>
 
   </div>
 
-  <!-- REGISTRATION -->
+
+  <!-- ============================================
+       REGISTRATION
+  ============================================= -->
 
   <div
     id="registrationCard"
     class="card hidden"
   >
 
-```
-<div class="register-title">
-  🔗 ลงทะเบียนพนักงาน
-</div>
-
-<div class="register-note">
-  LINE นี้ยังไม่ได้ผูกกับข้อมูลพนักงาน<br>
-  กรุณากรอกรหัสพนักงานของท่าน
-</div>
-
-<input
-  id="registerEmployeeId"
-  type="text"
-  placeholder="กรอกรหัสพนักงาน"
-  autocomplete="off"
->
-
-<button
-  id="checkEmployeeBtn"
-  class="btn-register"
-  onclick="checkRegistration()"
->
-  ตรวจสอบรหัสพนักงาน
-</button>
-
-
-<div
-  id="registerConfirm"
-  class="confirm-box hidden"
->
-
-  <div class="confirm-row">
-
-    <div class="confirm-label">
-      รหัสพนักงาน
+    <div class="register-title">
+      🔗 ลงทะเบียนพนักงาน
     </div>
+
+    <div class="register-note">
+      LINE นี้ยังไม่ได้ผูกกับข้อมูลพนักงาน<br>
+      กรุณากรอกรหัสพนักงานของท่าน
+    </div>
+
+
+    <input
+      id="registerEmployeeId"
+      type="text"
+      placeholder="กรอกรหัสพนักงาน"
+      autocomplete="off"
+    >
+
+
+    <button
+      id="checkEmployeeBtn"
+      class="btn-register"
+      onclick="checkRegistration()"
+    >
+      ตรวจสอบรหัสพนักงาน
+    </button>
+
+
+    <!-- CONFIRM -->
 
     <div
-      class="confirm-value"
-      id="confirmEmployeeId"
+      id="registerConfirm"
+      class="confirm-box hidden"
     >
-      -
+
+      <div class="confirm-row">
+
+        <div class="confirm-label">
+          รหัสพนักงาน
+        </div>
+
+        <div
+          class="confirm-value"
+          id="confirmEmployeeId"
+        >
+          -
+        </div>
+
+      </div>
+
+
+      <div class="confirm-row">
+
+        <div class="confirm-label">
+          ชื่อ
+        </div>
+
+        <div
+          class="confirm-value"
+          id="confirmEmployeeName"
+        >
+          -
+        </div>
+
+      </div>
+
+
+      <div class="confirm-row">
+
+        <div class="confirm-label">
+          แผนก
+        </div>
+
+        <div
+          class="confirm-value"
+          id="confirmEmployeeDepartment"
+        >
+          -
+        </div>
+
+      </div>
+
+
+      <div class="confirm-row">
+
+        <div class="confirm-label">
+          กะ
+        </div>
+
+        <div
+          class="confirm-value"
+          id="confirmEmployeeShift"
+        >
+          -
+        </div>
+
+      </div>
+
+
+      <div
+        class="register-note"
+        style="margin-top:12px;"
+      >
+        กรุณาตรวจสอบว่าชื่อเป็นของท่าน
+        ก่อนกดยืนยัน
+      </div>
+
+
+      <button
+        id="confirmRegisterBtn"
+        class="btn-confirm"
+        onclick="confirmRegistration()"
+      >
+        ✅ ยืนยันการลงทะเบียน
+      </button>
+
+
+      <button
+        id="cancelRegisterBtn"
+        class="btn-cancel"
+        onclick="cancelRegistration()"
+      >
+        ยกเลิก
+      </button>
+
     </div>
 
-  </div>
-
-
-  <div class="confirm-row">
-
-    <div class="confirm-label">
-      ชื่อ
-    </div>
 
     <div
-      class="confirm-value"
-      id="confirmEmployeeName"
-    >
-      -
-    </div>
+      id="registrationMessage"
+      class="message"
+    ></div>
 
   </div>
 
 
-  <div class="confirm-row">
-
-    <div class="confirm-label">
-      แผนก
-    </div>
-
-    <div
-      class="confirm-value"
-      id="confirmEmployeeDepartment"
-    >
-      -
-    </div>
-
-  </div>
-
-
-  <div class="confirm-row">
-
-    <div class="confirm-label">
-      กะ
-    </div>
-
-    <div
-      class="confirm-value"
-      id="confirmEmployeeShift"
-    >
-      -
-    </div>
-
-  </div>
-
-
-  <div
-    class="register-note"
-    style="margin-top:12px;"
-  >
-    กรุณาตรวจสอบว่าชื่อเป็นของท่าน
-    ก่อนกดยืนยัน
-  </div>
-
-
-  <button
-    id="confirmRegisterBtn"
-    class="btn-confirm"
-    onclick="confirmRegistration()"
-  >
-    ✅ ยืนยันการลงทะเบียน
-  </button>
-
-
-  <button
-    id="cancelRegisterBtn"
-    class="btn-cancel"
-    onclick="cancelRegistration()"
-  >
-    ยกเลิก
-  </button>
-
-</div>
-
-
-<div
-  id="registrationMessage"
-  class="message"
-></div>
-```
-
-  </div>
-
-  <!-- PROFILE -->
+  <!-- ============================================
+       PROFILE
+  ============================================= -->
 
   <div
     id="profileCard"
     class="card hidden"
   >
 
-```
-<div class="profile">
+    <div class="profile">
 
-  <div class="label">
-    รหัสพนักงาน
-  </div>
+      <div class="label">
+        รหัสพนักงาน
+      </div>
 
-  <div
-    class="value"
-    id="employeeId"
-  >
-    -
-  </div>
-
-
-  <div class="label">
-    ชื่อ
-  </div>
-
-  <div
-    class="value"
-    id="employeeName"
-  >
-    -
-  </div>
+      <div
+        class="value"
+        id="employeeId"
+      >
+        -
+      </div>
 
 
-  <div class="label">
-    แผนก
-  </div>
+      <div class="label">
+        ชื่อ
+      </div>
 
-  <div
-    class="value"
-    id="employeeDepartment"
-  >
-    -
-  </div>
-
-
-  <div class="label">
-    กะ
-  </div>
-
-  <div
-    class="value"
-    id="employeeShift"
-  >
-    -
-  </div>
+      <div
+        class="value"
+        id="employeeName"
+      >
+        -
+      </div>
 
 
-  <div class="label">
-    เวลา
-  </div>
+      <div class="label">
+        แผนก
+      </div>
 
-  <div
-    class="value"
-    id="employeeShiftTime"
-  >
-    -
-  </div>
+      <div
+        class="value"
+        id="employeeDepartment"
+      >
+        -
+      </div>
 
-</div>
-```
+
+      <div class="label">
+        กะ
+      </div>
+
+      <div
+        class="value"
+        id="employeeShift"
+      >
+        -
+      </div>
+
+
+      <div class="label">
+        เวลา
+      </div>
+
+      <div
+        class="value"
+        id="employeeShiftTime"
+      >
+        -
+      </div>
+
+    </div>
 
   </div>
 
-  <!-- STATUS -->
+
+  <!-- ============================================
+       STATUS
+  ============================================= -->
 
   <div
     id="statusCard"
     class="card hidden"
   >
 
-```
-<div class="status">
+    <div class="status">
 
-  <div
-    class="status-title"
-    id="statusTitle"
-  >
-    กำลังตรวจสอบ...
-  </div>
-
-
-  <div
-    class="status-detail"
-    id="statusDetail"
-  >
-    -
-  </div>
-
-</div>
+      <div
+        class="status-title"
+        id="statusTitle"
+      >
+        กำลังตรวจสอบ...
+      </div>
 
 
-<div
-  id="gpsStatus"
-  class="gps"
->
-  ระบบจะขอตำแหน่ง GPS เมื่อกดเข้างานหรือออกงาน
-</div>
+      <div
+        class="status-detail"
+        id="statusDetail"
+      >
+        -
+      </div>
+
+    </div>
 
 
-<button
-  id="clockInBtn"
-  class="btn-in"
-  onclick="handleClockIn()"
->
-  🟢 เข้างาน
-</button>
+    <div
+      id="gpsStatus"
+      class="gps"
+    >
+      ระบบจะขอตำแหน่ง GPS เมื่อกดเข้างานหรือออกงาน
+    </div>
 
 
-<button
-  id="clockOutBtn"
-  class="btn-out"
-  onclick="handleClockOut()"
->
-  🔴 ออกงาน
-</button>
+    <button
+      id="clockInBtn"
+      class="btn-in"
+      onclick="handleClockIn()"
+    >
+      🟢 เข้างาน
+    </button>
 
 
-<div
-  id="message"
-  class="message"
-></div>
-```
+    <button
+      id="clockOutBtn"
+      class="btn-out"
+      onclick="handleClockOut()"
+    >
+      🔴 ออกงาน
+    </button>
+
+
+    <div
+      id="message"
+      class="message"
+    ></div>
 
   </div>
 
 </div>
+
 
 <script>
+
 
 /* =================================================
  * CONFIG
@@ -556,6 +577,7 @@ button:disabled {
 
 const LIFF_ID =
   '2011898137-tsjk9yOf';
+
 
 const API_URL =
   'https://script.google.com/macros/s/AKfycbzlrkbwA4YsXhCOTwuqHneIVeGIYjbthK7qpsAvMsKfXAkEytP28hh0WE04wqf25_ZI/exec';
@@ -575,14 +597,22 @@ let registrationEmployee = null;
 
 
 /* =================================================
- * INIT
+ * START
  * ================================================= */
 
 window.addEventListener(
   'load',
-  init
+  function() {
+
+    init();
+
+  }
 );
 
+
+/* =================================================
+ * INIT
+ * ================================================= */
 
 async function init() {
 
@@ -593,10 +623,18 @@ async function init() {
     );
 
 
+    /*
+     * 1. INIT LIFF
+     */
+
     await liff.init({
       liffId: LIFF_ID
     });
 
+
+    /*
+     * 2. CHECK LOGIN
+     */
 
     if (!liff.isLoggedIn()) {
 
@@ -605,6 +643,15 @@ async function init() {
       return;
 
     }
+
+
+    /*
+     * 3. GET LINE PROFILE
+     */
+
+    showLoading(
+      'กำลังอ่านข้อมูล LINE...'
+    );
 
 
     const profile =
@@ -632,6 +679,18 @@ async function init() {
     }
 
 
+    /*
+     * 4. CHECK PROFILE
+     *
+     * Backend จะใช้ LINE User ID
+     * ค้นหาจาก สิทธิ์LINE
+     */
+
+    showLoading(
+      'กำลังตรวจสอบสิทธิ์...'
+    );
+
+
     const profileResult =
       await callAPI(
         'profile'
@@ -643,6 +702,10 @@ async function init() {
       profileResult
     );
 
+
+    /*
+     * 5. ถ้าพบพนักงานที่ผูก LINE แล้ว
+     */
 
     if (
       isApiOK(profileResult) &&
@@ -658,14 +721,28 @@ async function init() {
       );
 
 
+      showMainSystem();
+
+
+      /*
+       * โหลดสถานะตอกบัตร
+       */
+
+      showLoading(
+        'กำลังตรวจสอบสถานะ...'
+      );
+
+
       await loadStatus();
 
 
-      hideRegistration();
-
-      showMainSystem();
-
     }
+
+
+    /*
+     * 6. ถ้ายังไม่พบการผูกพนักงาน
+     */
+
     else {
 
       showRegistration();
@@ -673,13 +750,19 @@ async function init() {
     }
 
 
-    hideLoading();
-
+    /*
+     * 7. แสดงหน้า APP
+     */
 
     document
-      .getElementById('app')
+      .getElementById(
+        'app'
+      )
       .style.display =
         'block';
+
+
+    hideLoading();
 
 
   } catch (err) {
@@ -688,6 +771,7 @@ async function init() {
       'INIT ERROR:',
       err
     );
+
 
     showFatalError(
       err.message ||
@@ -717,7 +801,7 @@ function isApiOK(result) {
 
 
 /* =================================================
- * SHOW MAIN SYSTEM
+ * MAIN SYSTEM
  * ================================================= */
 
 function showMainSystem() {
@@ -752,7 +836,7 @@ function showMainSystem() {
 
 
 /* =================================================
- * SHOW REGISTRATION
+ * REGISTRATION
  * ================================================= */
 
 function showRegistration() {
@@ -792,6 +876,15 @@ function showRegistration() {
       '';
 
 
+  document
+    .getElementById(
+      'registerConfirm'
+    )
+    .classList.add(
+      'hidden'
+    );
+
+
   clearRegistrationMessage();
 
 }
@@ -823,11 +916,15 @@ async function checkRegistration() {
   clearRegistrationMessage();
 
 
-  const employeeId =
+  const input =
     document
       .getElementById(
         'registerEmployeeId'
-      )
+      );
+
+
+  const employeeId =
+    input
       .value
       .trim()
       .toUpperCase();
@@ -880,6 +977,7 @@ async function checkRegistration() {
       'REGISTER CHECK LINE USER ID =',
       lineUserId
     );
+
 
     console.log(
       'REGISTER CHECK EMPLOYEE ID =',
@@ -1067,7 +1165,7 @@ async function confirmRegistration() {
 
 
     showRegistrationMessage(
-      'กำลังบันทึก LINE ID...',
+      'กำลังบันทึกการเชื่อมต่อ LINE...',
       'info'
     );
 
@@ -1123,36 +1221,36 @@ async function confirmRegistration() {
       registrationEmployee;
 
 
-    showRegistrationMessage(
-      'ลงทะเบียน LINE สำเร็จ',
-      'success'
-    );
-
-
     displayProfile({
       employee:
         employee
     });
 
 
+    showMainSystem();
+
+
+    showLoading(
+      'กำลังตรวจสอบสถานะ...'
+    );
+
+
     await loadStatus();
+
+
+    hideRegistration();
+
+
+    hideLoading();
 
 
     registrationEmployee =
       null;
 
 
-    setTimeout(
-      function() {
-
-        hideRegistration();
-
-        showMainSystem();
-
-        clearRegistrationMessage();
-
-      },
-      800
+    showMessage(
+      'ลงทะเบียน LINE สำเร็จ',
+      'success'
     );
 
 
@@ -1319,12 +1417,17 @@ async function loadStatus() {
 
 
   currentStatus =
-    result.status;
+    result.status ||
+    null;
 
 
-  displayStatus(
-    result.status
-  );
+  if (currentStatus) {
+
+    displayStatus(
+      currentStatus
+    );
+
+  }
 
 }
 
@@ -1336,6 +1439,7 @@ async function loadStatus() {
 function displayProfile(result) {
 
   const emp =
+    result &&
     result.employee;
 
 
@@ -1534,32 +1638,38 @@ function formatHourMinute(
 function displayStatus(status) {
 
   if (!status) {
+
     return;
+
   }
 
 
   const title =
-    document.getElementById(
-      'statusTitle'
-    );
+    document
+      .getElementById(
+        'statusTitle'
+      );
 
 
   const detail =
-    document.getElementById(
-      'statusDetail'
-    );
+    document
+      .getElementById(
+        'statusDetail'
+      );
 
 
   const clockInBtn =
-    document.getElementById(
-      'clockInBtn'
-    );
+    document
+      .getElementById(
+        'clockInBtn'
+      );
 
 
   const clockOutBtn =
-    document.getElementById(
-      'clockOutBtn'
-    );
+    document
+      .getElementById(
+        'clockOutBtn'
+      );
 
 
   title.textContent =
@@ -1567,7 +1677,8 @@ function displayStatus(status) {
     '-';
 
 
-  let html = '';
+  let html =
+    '';
 
 
   if (status.checkIn) {
@@ -1642,8 +1753,13 @@ function displayStatus(status) {
 
 
   detail.innerHTML =
-    html || '';
+    html ||
+    '';
 
+
+  /*
+   * สถานะวันนี้
+   */
 
   if (
     status.state ===
@@ -1695,7 +1811,7 @@ function displayStatus(status) {
 
 
 /* =================================================
- * API CALL
+ * API CALL - JSONP
  * ================================================= */
 
 function callAPI(
@@ -1732,11 +1848,9 @@ function callAPI(
 
 
       /*
-       * LINE User ID
-       *
-       * ใช้ค่าจาก extraParams ก่อน
-       * ถ้าไม่มี ให้ใช้ตัวแปร lineUserId
+       * LINE USER ID
        */
+
       const currentLineUserId =
         extraParams.lineUserId ||
         lineUserId ||
@@ -1750,8 +1864,9 @@ function callAPI(
 
 
       /*
-       * JSONP callback
+       * JSONP CALLBACK
        */
+
       params.set(
         'callback',
         callbackName
@@ -1759,8 +1874,9 @@ function callAPI(
 
 
       /*
-       * ส่ง parameter อื่นทั้งหมด
+       * EXTRA PARAMETERS
        */
+
       Object.keys(
         extraParams
       ).forEach(
@@ -1768,6 +1884,7 @@ function callAPI(
 
           const value =
             extraParams[key];
+
 
           if (
             value !== undefined &&
@@ -1786,8 +1903,9 @@ function callAPI(
 
 
       /*
-       * สร้าง Script สำหรับ JSONP
+       * SCRIPT
        */
+
       const script =
         document.createElement(
           'script'
@@ -1799,8 +1917,9 @@ function callAPI(
 
 
       /*
-       * ล้าง Script
+       * CLEANUP
        */
+
       function cleanup() {
 
         clearTimeout(
@@ -1832,8 +1951,9 @@ function callAPI(
 
 
       /*
-       * Timeout 20 วินาที
+       * TIMEOUT
        */
+
       const timeout =
         setTimeout(
           function() {
@@ -1847,18 +1967,18 @@ function callAPI(
               true;
 
 
-            cleanup();
-
-
             console.error(
               'API TIMEOUT:',
               action
             );
 
 
+            cleanup();
+
+
             reject(
               new Error(
-                'ไม่สามารถเชื่อมต่อ API ได้'
+                'ไม่สามารถเชื่อมต่อ API ได้\nกรุณาลองเปิดระบบใหม่อีกครั้ง'
               )
             );
 
@@ -1868,8 +1988,9 @@ function callAPI(
 
 
       /*
-       * JSONP Callback
+       * CALLBACK
        */
+
       window[callbackName] =
         function(data) {
 
@@ -1890,12 +2011,9 @@ function callAPI(
 
 
           /*
-           * Backend ส่ง ok
-           *
-           * Frontend บางส่วนใช้ success
-           *
-           * ทำให้รองรับทั้งสองแบบ
+           * รองรับ Backend ok:true
            */
+
           if (
             data &&
             data.success === undefined &&
@@ -1908,25 +2026,20 @@ function callAPI(
           }
 
 
-          /*
-           * ส่งผลกลับไปยัง Promise
-           */
           resolve(
             data
           );
 
 
-          /*
-           * ล้างหลังจาก resolve
-           */
           cleanup();
 
         };
 
 
       /*
-       * URL ที่จะเรียก
+       * REQUEST URL
        */
+
       script.src =
         API_URL +
         '?' +
@@ -1935,13 +2048,15 @@ function callAPI(
 
       console.log(
         'API REQUEST:',
+        action,
         script.src
       );
 
 
       /*
-       * กรณี Script โหลดไม่ได้
+       * ERROR
        */
+
       script.onerror =
         function() {
 
@@ -1954,13 +2069,13 @@ function callAPI(
             true;
 
 
-          cleanup();
-
-
           console.error(
             'API SCRIPT ERROR:',
             action
           );
+
+
+          cleanup();
 
 
           reject(
@@ -1973,8 +2088,9 @@ function callAPI(
 
 
       /*
-       * เริ่มเรียก API
+       * START
        */
+
       document
         .body
         .appendChild(
@@ -1985,6 +2101,109 @@ function callAPI(
   );
 
 }
+
+
+/* =================================================
+ * CLOCK IN
+ * ================================================= */
+
+async function handleClockIn() {
+
+  clearMessage();
+
+
+  try {
+
+    setButtonsDisabled(
+      true
+    );
+
+
+    showMessage(
+      'กำลังอ่านตำแหน่ง GPS...',
+      'success'
+    );
+
+
+    const position =
+      await getGPS();
+
+
+    showMessage(
+      'กำลังบันทึกเวลาเข้างาน...',
+      'success'
+    );
+
+
+    const result =
+      await callAPI(
+        'clockIn',
+        {
+          latitude:
+            position.latitude,
+
+          longitude:
+            position.longitude
+        }
+      );
+
+
+    if (!isApiOK(result)) {
+
+      throw new Error(
+        result &&
+        result.error
+          ? result.error
+          : 'ไม่สามารถบันทึกเวลาเข้างานได้'
+      );
+
+    }
+
+
+    showMessage(
+      result.message ||
+      'บันทึกเวลาเข้างานเรียบร้อย',
+      'success'
+    );
+
+
+    await loadStatus();
+
+
+  } catch (err) {
+
+    console.error(
+      'CLOCK IN ERROR:',
+      err
+    );
+
+
+    showMessage(
+      err.message ||
+      String(err),
+      'error'
+    );
+
+
+  } finally {
+
+    setButtonsDisabled(
+      false
+    );
+
+
+    if (currentStatus) {
+
+      displayStatus(
+        currentStatus
+      );
+
+    }
+
+  }
+
+}
+
 
 /* =================================================
  * CLOCK OUT
@@ -2278,9 +2497,10 @@ function showMessage(
 ) {
 
   const el =
-    document.getElementById(
-      'message'
-    );
+    document
+      .getElementById(
+        'message'
+      );
 
 
   el.textContent =
@@ -2299,9 +2519,10 @@ function showMessage(
 function clearMessage() {
 
   const el =
-    document.getElementById(
-      'message'
-    );
+    document
+      .getElementById(
+        'message'
+      );
 
 
   el.textContent =
@@ -2321,9 +2542,10 @@ function clearMessage() {
 function showLoading(text) {
 
   const el =
-    document.getElementById(
-      'loading'
-    );
+    document
+      .getElementById(
+        'loading'
+      );
 
 
   el.textContent =
