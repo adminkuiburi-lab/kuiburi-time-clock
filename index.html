@@ -1731,6 +1731,12 @@ function callAPI(
       );
 
 
+      /*
+       * LINE User ID
+       *
+       * ใช้ค่าจาก extraParams ก่อน
+       * ถ้าไม่มี ให้ใช้ตัวแปร lineUserId
+       */
       const currentLineUserId =
         extraParams.lineUserId ||
         lineUserId ||
@@ -1743,27 +1749,34 @@ function callAPI(
       );
 
 
+      /*
+       * JSONP callback
+       */
       params.set(
         'callback',
         callbackName
       );
 
 
+      /*
+       * ส่ง parameter อื่นทั้งหมด
+       */
       Object.keys(
         extraParams
       ).forEach(
         function(key) {
 
+          const value =
+            extraParams[key];
+
           if (
-            extraParams[key] !== undefined &&
-            extraParams[key] !== null
+            value !== undefined &&
+            value !== null
           ) {
 
             params.set(
               key,
-              String(
-                extraParams[key]
-              )
+              String(value)
             );
 
           }
@@ -1772,6 +1785,9 @@ function callAPI(
       );
 
 
+      /*
+       * สร้าง Script สำหรับ JSONP
+       */
       const script =
         document.createElement(
           'script'
@@ -1782,92 +1798,9 @@ function callAPI(
         false;
 
 
-      const timeout =
-        setTimeout(
-          function() {
-
-            if (finished) {
-              return;
-            }
-
-
-            finished =
-              true;
-
-
-            cleanup();
-
-
-            reject(
-              new Error(
-                'ไม่สามารถเชื่อมต่อ API ได้'
-              )
-            );
-
-          },
-          20000
-        );
-
-
-      window[callbackName] =
-        function(data) {
-
-          if (finished) {
-            return;
-          }
-
-
-          finished =
-            true;
-
-
-          cleanup();
-
-
-          resolve(
-            data
-          );
-
-        };
-
-
-      script.src =
-        API_URL +
-        '?' +
-        params.toString();
-
-
-      script.onerror =
-        function() {
-
-          if (finished) {
-            return;
-          }
-
-
-          finished =
-            true;
-
-
-          cleanup();
-
-
-          reject(
-            new Error(
-              'ไม่สามารถเชื่อมต่อ API ได้'
-            )
-          );
-
-        };
-
-
-      document
-        .body
-        .appendChild(
-          script
-        );
-
-
+      /*
+       * ล้าง Script
+       */
       function cleanup() {
 
         clearTimeout(
@@ -1897,113 +1830,161 @@ function callAPI(
 
       }
 
+
+      /*
+       * Timeout 20 วินาที
+       */
+      const timeout =
+        setTimeout(
+          function() {
+
+            if (finished) {
+              return;
+            }
+
+
+            finished =
+              true;
+
+
+            cleanup();
+
+
+            console.error(
+              'API TIMEOUT:',
+              action
+            );
+
+
+            reject(
+              new Error(
+                'ไม่สามารถเชื่อมต่อ API ได้'
+              )
+            );
+
+          },
+          20000
+        );
+
+
+      /*
+       * JSONP Callback
+       */
+      window[callbackName] =
+        function(data) {
+
+          if (finished) {
+            return;
+          }
+
+
+          finished =
+            true;
+
+
+          console.log(
+            'API RESPONSE:',
+            action,
+            data
+          );
+
+
+          /*
+           * Backend ส่ง ok
+           *
+           * Frontend บางส่วนใช้ success
+           *
+           * ทำให้รองรับทั้งสองแบบ
+           */
+          if (
+            data &&
+            data.success === undefined &&
+            data.ok !== undefined
+          ) {
+
+            data.success =
+              data.ok;
+
+          }
+
+
+          /*
+           * ส่งผลกลับไปยัง Promise
+           */
+          resolve(
+            data
+          );
+
+
+          /*
+           * ล้างหลังจาก resolve
+           */
+          cleanup();
+
+        };
+
+
+      /*
+       * URL ที่จะเรียก
+       */
+      script.src =
+        API_URL +
+        '?' +
+        params.toString();
+
+
+      console.log(
+        'API REQUEST:',
+        script.src
+      );
+
+
+      /*
+       * กรณี Script โหลดไม่ได้
+       */
+      script.onerror =
+        function() {
+
+          if (finished) {
+            return;
+          }
+
+
+          finished =
+            true;
+
+
+          cleanup();
+
+
+          console.error(
+            'API SCRIPT ERROR:',
+            action
+          );
+
+
+          reject(
+            new Error(
+              'ไม่สามารถเชื่อมต่อ API ได้'
+            )
+          );
+
+        };
+
+
+      /*
+       * เริ่มเรียก API
+       */
+      document
+        .body
+        .appendChild(
+          script
+        );
+
     }
   );
 
 }
-
-
-/* =================================================
- * CLOCK IN
- * ================================================= */
-
-async function handleClockIn() {
-
-  clearMessage();
-
-
-  try {
-
-    setButtonsDisabled(
-      true
-    );
-
-
-    showMessage(
-      'กำลังอ่านตำแหน่ง GPS...',
-      'success'
-    );
-
-
-    const position =
-      await getGPS();
-
-
-    showMessage(
-      'กำลังบันทึกเวลาเข้างาน...',
-      'success'
-    );
-
-
-    const result =
-      await callAPI(
-        'clockIn',
-        {
-          latitude:
-            position.latitude,
-
-          longitude:
-            position.longitude
-        }
-      );
-
-
-    if (!isApiOK(result)) {
-
-      throw new Error(
-        result &&
-        result.error
-          ? result.error
-          : 'ไม่สามารถบันทึกเวลาเข้างานได้'
-      );
-
-    }
-
-
-    showMessage(
-      result.message ||
-      'บันทึกเวลาเข้างานเรียบร้อย',
-      'success'
-    );
-
-
-    await loadStatus();
-
-
-  } catch (err) {
-
-    console.error(
-      'CLOCK IN ERROR:',
-      err
-    );
-
-
-    showMessage(
-      err.message ||
-      String(err),
-      'error'
-    );
-
-
-  } finally {
-
-    setButtonsDisabled(
-      false
-    );
-
-
-    if (currentStatus) {
-
-      displayStatus(
-        currentStatus
-      );
-
-    }
-
-  }
-
-}
-
 
 /* =================================================
  * CLOCK OUT
