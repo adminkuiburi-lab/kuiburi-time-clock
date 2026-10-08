@@ -1597,34 +1597,35 @@ function callAPI(
           Math.random() * 100000
         );
 
-
       const params =
         new URLSearchParams();
-
 
       params.set(
         'api',
         '1'
       );
 
-
       params.set(
         'action',
         action
       );
 
+      // ใช้ LINE User ID จาก extraParams ก่อน
+      // ถ้าไม่มี ค่อยใช้ตัวแปร lineUserId
+      const currentLineUserId =
+        extraParams.lineUserId ||
+        lineUserId ||
+        '';
 
       params.set(
         'userId',
-        lineUserId
+        currentLineUserId
       );
-
 
       params.set(
         'callback',
         callbackName
       );
-
 
       Object.keys(
         extraParams
@@ -1639,12 +1640,10 @@ function callAPI(
         }
       );
 
-
       const script =
         document.createElement(
           'script'
         );
-
 
       const timeout =
         setTimeout(
@@ -1662,7 +1661,6 @@ function callAPI(
           20000
         );
 
-
       window[callbackName] =
         function(data) {
 
@@ -1672,12 +1670,10 @@ function callAPI(
 
         };
 
-
       script.src =
         API_URL +
         '?' +
         params.toString();
-
 
       script.onerror =
         function() {
@@ -1692,20 +1688,17 @@ function callAPI(
 
         };
 
-
       document
         .body
         .appendChild(
           script
         );
 
-
       function cleanup() {
 
         clearTimeout(
           timeout
         );
-
 
         if (
           script.parentNode
@@ -1717,7 +1710,6 @@ function callAPI(
             );
 
         }
-
 
         try {
 
@@ -1733,7 +1725,6 @@ function callAPI(
   );
 
 }
-
 
 /* =================================================
  * CLOCK IN
