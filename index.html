@@ -887,8 +887,19 @@ const result =
     }
 
 
-    registrationEmployee =
-      result.employee;
+   registrationEmployee =
+  result.employee;
+
+if (
+  registrationEmployee &&
+  !registrationEmployee.id
+) {
+
+  registrationEmployee.id =
+    registrationEmployee.employeeId ||
+    '';
+
+}
 
 
     document
@@ -896,7 +907,16 @@ const result =
         'confirmEmployeeId'
       )
       .textContent =
-        result.employee.id || '-';
+        const result =
+  await callAPI(
+    'registerLink',
+    {
+      employeeId:
+        registrationEmployee.employeeId ||
+        registrationEmployee.id ||
+        ''
+    }
+  );
 
 
     document
@@ -904,6 +924,8 @@ const result =
         'confirmEmployeeName'
       )
       .textContent =
+
+      
         result.employee.name || '-';
 
 
@@ -1613,8 +1635,6 @@ function callAPI(
         action
       );
 
-      // ใช้ LINE User ID จาก extraParams ก่อน
-      // ถ้าไม่มี ค่อยใช้ตัวแปร lineUserId
       const currentLineUserId =
         extraParams.lineUserId ||
         lineUserId ||
@@ -1635,10 +1655,17 @@ function callAPI(
       ).forEach(
         function(key) {
 
-          params.set(
-            key,
-            extraParams[key]
-          );
+          if (
+            extraParams[key] !== undefined &&
+            extraParams[key] !== null
+          ) {
+
+            params.set(
+              key,
+              extraParams[key]
+            );
+
+          }
 
         }
       );
@@ -1648,15 +1675,23 @@ function callAPI(
           'script'
         );
 
+      let finished = false;
+
       const timeout =
         setTimeout(
           function() {
+
+            if (finished) {
+              return;
+            }
+
+            finished = true;
 
             cleanup();
 
             reject(
               new Error(
-                'เชื่อมต่อระบบไม่สำเร็จ'
+                'ไม่สามารถเชื่อมต่อ API ได้'
               )
             );
 
@@ -1667,7 +1702,30 @@ function callAPI(
       window[callbackName] =
         function(data) {
 
+          if (finished) {
+            return;
+          }
+
+          finished = true;
+
           cleanup();
+
+          /*
+           * Backend ใช้ ok
+           * Frontend เดิมใช้ success
+           *
+           * แปลงให้รองรับทั้งสองแบบ
+           */
+          if (
+            data &&
+            data.success === undefined &&
+            data.ok !== undefined
+          ) {
+
+            data.success =
+              data.ok;
+
+          }
 
           resolve(data);
 
@@ -1680,6 +1738,12 @@ function callAPI(
 
       script.onerror =
         function() {
+
+          if (finished) {
+            return;
+          }
+
+          finished = true;
 
           cleanup();
 
@@ -1696,6 +1760,7 @@ function callAPI(
         .appendChild(
           script
         );
+
 
       function cleanup() {
 
