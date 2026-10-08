@@ -839,7 +839,10 @@ async function checkRegistration() {
     );
 
 
-    const result =
+    console.log('LINE USER ID =', lineUserId);
+console.log('EMPLOYEE ID =', employeeId);
+
+const result =
   await callAPI(
     'registerCheck',
     {
